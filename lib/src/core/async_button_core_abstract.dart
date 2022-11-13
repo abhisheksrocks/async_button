@@ -1,9 +1,11 @@
-import '../helpers/constants.dart';
-import '../helpers/async_button_state_style.dart';
-import 'async_button_state_controller_abstract.dart';
-import 'async_button_state_controller_impl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import '../helpers/async_button_state_style.dart';
+import '../helpers/constants.dart';
+import '../helpers/custom_border_side_tween.dart';
+import 'async_button_state_controller_abstract.dart';
+import 'async_button_state_controller_impl.dart';
 
 /// Base abstract class for creating async button
 abstract class AsyncButtonCore extends StatefulWidget {
@@ -12,8 +14,11 @@ abstract class AsyncButtonCore extends StatefulWidget {
     Key? key,
     required this.child,
     this.loadingStyle,
+    this.loadingStyleBuilder,
     this.successStyle,
+    this.successStyleBuilder,
     this.failureStyle,
+    this.failureStyleBuilder,
     this.style,
     required this.onPressed,
     this.switchBackAfterCompletion = true,
@@ -49,17 +54,32 @@ abstract class AsyncButtonCore extends StatefulWidget {
   /// Can be null, in which case, uses the [style] and [child] instead.
   final AsyncButtonStateStyle? loadingStyle;
 
+  /// Same as [loadingStyle] but the result is generated at runtime.
+  ///
+  /// If the result is not null, it takes precedence over [loadingStyle].
+  final AsyncButtonStateStyle? Function(dynamic data)? loadingStyleBuilder;
+
   /// Defines the corresponding style for if button's current [ButtonState] is
   /// [ButtonState.success]
   ///
   /// Can be null, in which case, uses the [style] and [child] instead.
   final AsyncButtonStateStyle? successStyle;
 
+  /// Same as [successStyle] but the result is generated at runtime.
+  ///
+  /// If the result is not null, it takes precedence over [successStyle].
+  final AsyncButtonStateStyle? Function(dynamic data)? successStyleBuilder;
+
   /// Defines the corresponding style for if button's current [ButtonState] is
   /// [ButtonState.failure]
   ///
   /// Can be null, in which case, uses the [style] and [child] instead.
   final AsyncButtonStateStyle? failureStyle;
+
+  /// Same as [failureStyle] but the result is generated at runtime.
+  ///
+  /// If the result is not null, it takes precedence over [failureStyle].
+  final AsyncButtonStateStyle? Function(dynamic data)? failureStyleBuilder;
 
   /// Defines the default appearance of the button.
   ///
@@ -197,10 +217,10 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
   late AnimationController _animationController;
   late Animation<Color?> _backgroundColorAnimation;
   late Animation<Color?> _foregroundColorAnimation;
-  // late Animation<Color?> _overlayColorAnimation;
-  // late Animation<double?> _elevationAnimation;
-  // late Animation<Color?> _shadowColorAnimation;
-  // late Animation<ShapeBorder?> _shapeBorderAnimation;
+  late Animation<Color?> _overlayColorAnimation;
+  late Animation<double?> _elevationAnimation;
+  late Animation<Color?> _shadowColorAnimation;
+  late Animation<ShapeBorder?> _shapeBorderAnimation;
   late Animation<Color?> _surfaceTintColorAnimation;
   // late Animation<TextStyle?> _textStyleAnimation;
   late Animation<EdgeInsetsGeometry?> _egdeInsetsGeometryAnimation;
@@ -208,13 +228,14 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
   // late Animation<Size?> _fixedSizeAnimation;
   late Animation<Size?> _minimumSizeAnimation;
   late Animation<Size?> _maximumSizeAnimation;
+  late Animation<BorderSide?> _borderSideAnimation;
 
   final ColorTween _backgroundColorTween = ColorTween();
   final ColorTween _foregroundColorTween = ColorTween();
-  // final ColorTween _overlayColorTween = ColorTween();
-  // final Tween<double> _elevationTween = Tween<double>();
-  // final ColorTween _shadowColorTween = ColorTween();
-  // final ShapeBorderTween _shapeBorderTween = ShapeBorderTween();
+  final ColorTween _overlayColorTween = ColorTween();
+  final Tween<double> _elevationTween = Tween<double>();
+  final ColorTween _shadowColorTween = ColorTween();
+  final ShapeBorderTween _shapeBorderTween = ShapeBorderTween();
   final ColorTween _surfaceTintColorTween = ColorTween();
   // final TextStyleTween _textStyleTween = TextStyleTween();
   final EdgeInsetsGeometryTween _egdeInsetsGeometryTween =
@@ -224,12 +245,15 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
   // final SizeTween _fixedSizeTween = SizeTween();
   final SizeTween _minimumSizeTween = SizeTween();
   final SizeTween _maximumSizeTween = SizeTween();
+  final CustomBorderSideTween _borderSideTween = CustomBorderSideTween();
 
   /// Keeps track of whether [AsyncButtonCore.onPressed] is currently executing
   bool isExecuting = false;
 
   /// Keeps track of current [ButtonState]
   ButtonState currentButtonState = ButtonState.idle;
+
+  dynamic _data;
 
   late ButtonStyle _buttonStyle;
 
@@ -238,8 +262,27 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
 
   @override
   @mustCallSuper
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void didUpdateWidget(covariant AsyncButtonCore oldWidget) {
+    if (widget.switchBackAfterCompletion !=
+            oldWidget.switchBackAfterCompletion ||
+        widget.switchBackDelay != oldWidget.switchBackDelay ||
+        widget.lockWhileAlreadyExecuting !=
+            oldWidget.lockWhileAlreadyExecuting ||
+        widget.sizeAnimationCurve != oldWidget.sizeAnimationCurve ||
+        widget.sizeAnimationClipper != oldWidget.sizeAnimationClipper ||
+        widget.sizeAnimationDuration != oldWidget.sizeAnimationDuration ||
+        widget.switchInAnimationCurve != oldWidget.switchInAnimationCurve ||
+        widget.switchInAnimationDuration !=
+            oldWidget.switchInAnimationDuration ||
+        widget.switchOutAnimationCurve != oldWidget.switchOutAnimationCurve ||
+        widget.switchOutAnimationDuration !=
+            oldWidget.switchOutAnimationDuration) {
+      _initializeData();
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _initializeData() {
     _buttonStyle = intializeButtonStyle();
     _backgroundColorTween.begin = _backgroundColorTween.end =
         widget.onPressed == null
@@ -251,21 +294,21 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
             ? _buttonStyle.foregroundColor?.resolve({MaterialState.disabled})
             : _buttonStyle.foregroundColor?.resolve({});
 
-    // _overlayColorTween.begin = _overlayColorTween.end = widget.onPressed == null
-    //     ? buttonStyle.overlayColor?.resolve({MaterialState.disabled})
-    //     : buttonStyle.overlayColor?.resolve({});
+    _overlayColorTween.begin = _overlayColorTween.end = widget.onPressed == null
+        ? _buttonStyle.overlayColor?.resolve({MaterialState.disabled})
+        : _buttonStyle.overlayColor?.resolve({});
 
-    // _elevationTween.begin = _elevationTween.end = widget.onPressed == null
-    //     ? buttonStyle.elevation?.resolve({MaterialState.disabled})
-    //     : buttonStyle.elevation?.resolve({});
+    _elevationTween.begin = _elevationTween.end = widget.onPressed == null
+        ? _buttonStyle.elevation?.resolve({MaterialState.disabled})
+        : _buttonStyle.elevation?.resolve({});
 
-    // _shadowColorTween.begin = _shadowColorTween.end = widget.onPressed == null
-    //     ? buttonStyle.shadowColor?.resolve({MaterialState.disabled})
-    //     : buttonStyle.shadowColor?.resolve({});
+    _shadowColorTween.begin = _shadowColorTween.end = widget.onPressed == null
+        ? _buttonStyle.shadowColor?.resolve({MaterialState.disabled})
+        : _buttonStyle.shadowColor?.resolve({});
 
-    // _shapeBorderTween.begin = _shapeBorderTween.end = widget.onPressed == null
-    //     ? buttonStyle.shape?.resolve({MaterialState.disabled})
-    //     : buttonStyle.shape?.resolve({});
+    _shapeBorderTween.begin = _shapeBorderTween.end = widget.onPressed == null
+        ? _buttonStyle.shape?.resolve({MaterialState.disabled})
+        : _buttonStyle.shape?.resolve({});
 
     _surfaceTintColorTween.begin = _surfaceTintColorTween.end =
         widget.onPressed == null
@@ -295,6 +338,17 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
     _maximumSizeTween.begin = _maximumSizeTween.end = widget.onPressed == null
         ? _buttonStyle.maximumSize?.resolve({MaterialState.disabled})
         : _buttonStyle.maximumSize?.resolve({});
+
+    _borderSideTween.begin = _borderSideTween.end = widget.onPressed == null
+        ? _buttonStyle.side?.resolve({MaterialState.disabled})
+        : _buttonStyle.side?.resolve({});
+  }
+
+  @override
+  @mustCallSuper
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _initializeData();
   }
 
   @override
@@ -320,10 +374,10 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
     _foregroundColorAnimation =
         _foregroundColorTween.animate(_animationController);
 
-    // _overlayColorAnimation = _overlayColorTween.animate(animationController);
-    // _elevationAnimation = _elevationTween.animate(animationController);
-    // _shadowColorAnimation = _shadowColorTween.animate(animationController);
-    // _shapeBorderAnimation = _shapeBorderTween.animate(animationController);
+    _overlayColorAnimation = _overlayColorTween.animate(_animationController);
+    _elevationAnimation = _elevationTween.animate(_animationController);
+    _shadowColorAnimation = _shadowColorTween.animate(_animationController);
+    _shapeBorderAnimation = _shapeBorderTween.animate(_animationController);
     _surfaceTintColorAnimation =
         _surfaceTintColorTween.animate(_animationController);
     // _textStyleAnimation = _textStyleTween.animate(animationController);
@@ -334,6 +388,7 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
     // _fixedSizeAnimation = _fixedSizeTween.animate(animationController);
     _minimumSizeAnimation = _minimumSizeTween.animate(_animationController);
     _maximumSizeAnimation = _maximumSizeTween.animate(_animationController);
+    _borderSideAnimation = _borderSideTween.animate(_animationController);
   }
 
   @override
@@ -356,6 +411,12 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
           child: widget.child,
         );
       case ButtonState.loading:
+        if (widget.loadingStyleBuilder?.call(_data)?.widget != null) {
+          return SizedBox(
+            key: ValueKey(buttonState.name),
+            child: widget.loadingStyleBuilder?.call(_data)?.widget,
+          );
+        }
         return widget.loadingStyle?.widget != null
             ? SizedBox(
                 key: ValueKey(buttonState.name),
@@ -363,6 +424,12 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
               )
             : _renderButtonChild(ButtonState.idle);
       case ButtonState.success:
+        if (widget.successStyleBuilder?.call(_data)?.widget != null) {
+          return SizedBox(
+            key: ValueKey(buttonState.name),
+            child: widget.successStyleBuilder!.call(_data)?.widget,
+          );
+        }
         return widget.successStyle?.widget != null
             ? SizedBox(
                 key: ValueKey(buttonState.name),
@@ -370,6 +437,12 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
               )
             : _renderButtonChild(ButtonState.idle);
       case ButtonState.failure:
+        if (widget.failureStyleBuilder?.call(_data)?.widget != null) {
+          return SizedBox(
+            key: ValueKey(buttonState.name),
+            child: widget.failureStyleBuilder!.call(_data)?.widget,
+          );
+        }
         return widget.failureStyle?.widget != null
             ? SizedBox(
                 key: ValueKey(buttonState.name),
@@ -389,10 +462,10 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
               animationController: _animationController,
               backgroundColorAnimation: _backgroundColorAnimation,
               foregroundColorAnimation: _foregroundColorAnimation,
-              // overlayColorAnimation: _overlayColorAnimation,
-              // elevationAnimation: _elevationAnimation,
-              // shadowColorAnimation: _shadowColorAnimation,
-              // shapeBorderAnimation: _shapeBorderAnimation,
+              overlayColorAnimation: _overlayColorAnimation,
+              elevationAnimation: _elevationAnimation,
+              shadowColorAnimation: _shadowColorAnimation,
+              shapeBorderAnimation: _shapeBorderAnimation,
               surfaceTintColorAnimation: _surfaceTintColorAnimation,
               // fixedSizeAnimation: _fixedSizeAnimation,
               // textStyleAnimation: _textStyleAnimation,
@@ -400,13 +473,15 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
               alignmentGeometryAnimation: _alignmentGeometryAnimation,
               minimumSizeAnimation: _minimumSizeAnimation,
               maximumSizeAnimation: _maximumSizeAnimation,
+              borderSideAnimation: _borderSideAnimation,
 
+              //
               backgroundColorTween: _backgroundColorTween,
               foregroundColorTween: _foregroundColorTween,
-              // overlayColorTween: _overlayColorTween,
-              // elevationTween: _elevationTween,
-              // shadowColorTween: _shadowColorTween,
-              // shapeBorderTween: _shapeBorderTween,
+              overlayColorTween: _overlayColorTween,
+              elevationTween: _elevationTween,
+              shadowColorTween: _shadowColorTween,
+              shapeBorderTween: _shapeBorderTween,
               surfaceTintColorTween: _surfaceTintColorTween,
               // fixedSizeTween: _fixedSizeTween,
               // textStyleTween: _textStyleTween,
@@ -414,13 +489,19 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
               alignmentGeometryTween: _alignmentGeometryTween,
               minimumSizeTween: _minimumSizeTween,
               maximumSizeTween: _maximumSizeTween,
+              borderSideTween: _borderSideTween,
 
+              //
               buttonStyle: _buttonStyle,
               loadingStyle: widget.loadingStyle,
+              loadingStyleBuilder: widget.loadingStyleBuilder,
               successStyle: widget.successStyle,
+              successStyleBuilder: widget.successStyleBuilder,
               failureStyle: widget.failureStyle,
-              postUpdateCallback: (updatedBtnState) {
+              failureStyleBuilder: widget.failureStyleBuilder,
+              postUpdateCallback: (updatedBtnState, data) {
                 currentButtonState = updatedBtnState;
+                _data = data;
               },
             );
             isExecuting = true;
@@ -444,6 +525,14 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
       alignment: _alignmentGeometryAnimation.value,
       minimumSize: MaterialStateProperty.all(_minimumSizeAnimation.value),
       maximumSize: MaterialStateProperty.all(_maximumSizeAnimation.value),
+      shape: MaterialStateProperty.all(
+          _shapeBorderAnimation.value as OutlinedBorder),
+      side: MaterialStateProperty.all(_borderSideAnimation.value),
+      elevation: MaterialStateProperty.all(_elevationAnimation.value),
+      overlayColor: MaterialStateProperty.all(_overlayColorAnimation.value),
+      shadowColor: MaterialStateProperty.all(_shadowColorAnimation.value),
+      surfaceTintColor:
+          MaterialStateProperty.all(_surfaceTintColorAnimation.value),
       mouseCursor: () {
         MaterialStateProperty<MouseCursor?>? getValue(ButtonState buttonState) {
           switch (buttonState) {
@@ -452,13 +541,19 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
             case ButtonState.idle:
               return widget.style?.mouseCursor;
             case ButtonState.loading:
-              return widget.loadingStyle?.style?.mouseCursor ??
+              return (widget.loadingStyleBuilder?.call(_data)?.style ??
+                          widget.loadingStyle?.style)
+                      ?.mouseCursor ??
                   getValue(ButtonState.idle);
             case ButtonState.success:
-              return widget.successStyle?.style?.mouseCursor ??
+              return (widget.successStyleBuilder?.call(_data)?.style ??
+                          widget.successStyle?.style)
+                      ?.mouseCursor ??
                   getValue(ButtonState.idle);
             case ButtonState.failure:
-              return widget.failureStyle?.style?.mouseCursor ??
+              return (widget.failureStyleBuilder?.call(_data)?.style ??
+                          widget.failureStyle?.style)
+                      ?.mouseCursor ??
                   getValue(ButtonState.idle);
           }
         }
@@ -473,127 +568,25 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
             case ButtonState.idle:
               return widget.style?.tapTargetSize;
             case ButtonState.loading:
-              return widget.loadingStyle?.style?.tapTargetSize ??
+              return (widget.loadingStyleBuilder?.call(_data)?.style ??
+                          widget.loadingStyle?.style)
+                      ?.tapTargetSize ??
                   getValue(ButtonState.idle);
             case ButtonState.success:
-              return widget.successStyle?.style?.tapTargetSize ??
+              return (widget.successStyleBuilder?.call(_data)?.style ??
+                          widget.successStyle?.style)
+                      ?.tapTargetSize ??
                   getValue(ButtonState.idle);
             case ButtonState.failure:
-              return widget.failureStyle?.style?.tapTargetSize ??
+              return (widget.failureStyleBuilder?.call(_data)?.style ??
+                          widget.failureStyle?.style)
+                      ?.tapTargetSize ??
                   getValue(ButtonState.idle);
           }
         }
 
         return getValue(currentButtonState);
       }(),
-      shape: () {
-        MaterialStateProperty<OutlinedBorder?>? getValue(
-            ButtonState buttonState) {
-          switch (buttonState) {
-            case ButtonState.disabled:
-              return widget.style?.shape;
-            case ButtonState.idle:
-              return widget.style?.shape;
-            case ButtonState.loading:
-              return widget.loadingStyle?.style?.shape ??
-                  getValue(ButtonState.idle);
-            case ButtonState.success:
-              return widget.successStyle?.style?.shape ??
-                  getValue(ButtonState.idle);
-            case ButtonState.failure:
-              return widget.failureStyle?.style?.shape ??
-                  getValue(ButtonState.idle);
-          }
-        }
-
-        return getValue(currentButtonState);
-      }(),
-      side: () {
-        MaterialStateProperty<BorderSide?>? getValue(ButtonState buttonState) {
-          switch (buttonState) {
-            case ButtonState.disabled:
-              return widget.style?.side;
-            case ButtonState.idle:
-              return widget.style?.side;
-            case ButtonState.loading:
-              return widget.loadingStyle?.style?.side ??
-                  getValue(ButtonState.idle);
-            case ButtonState.success:
-              return widget.successStyle?.style?.side ??
-                  getValue(ButtonState.idle);
-            case ButtonState.failure:
-              return widget.failureStyle?.style?.side ??
-                  getValue(ButtonState.idle);
-          }
-        }
-
-        return getValue(currentButtonState);
-      }(),
-      elevation: () {
-        MaterialStateProperty<double?>? getValue(ButtonState buttonState) {
-          switch (buttonState) {
-            case ButtonState.disabled:
-              return widget.style?.elevation;
-            case ButtonState.idle:
-              return widget.style?.elevation;
-            case ButtonState.loading:
-              return widget.loadingStyle?.style?.elevation ??
-                  getValue(ButtonState.idle);
-            case ButtonState.success:
-              return widget.successStyle?.style?.elevation ??
-                  getValue(ButtonState.idle);
-            case ButtonState.failure:
-              return widget.failureStyle?.style?.elevation ??
-                  getValue(ButtonState.idle);
-          }
-        }
-
-        return getValue(currentButtonState);
-      }(),
-      overlayColor: () {
-        MaterialStateProperty<Color?>? getValue(ButtonState buttonState) {
-          switch (buttonState) {
-            case ButtonState.disabled:
-              return widget.style?.overlayColor;
-            case ButtonState.idle:
-              return widget.style?.overlayColor;
-            case ButtonState.loading:
-              return widget.loadingStyle?.style?.overlayColor ??
-                  getValue(ButtonState.idle);
-            case ButtonState.success:
-              return widget.successStyle?.style?.overlayColor ??
-                  getValue(ButtonState.idle);
-            case ButtonState.failure:
-              return widget.failureStyle?.style?.overlayColor ??
-                  getValue(ButtonState.idle);
-          }
-        }
-
-        return getValue(currentButtonState);
-      }(),
-      shadowColor: () {
-        MaterialStateProperty<Color?>? getValue(ButtonState buttonState) {
-          switch (buttonState) {
-            case ButtonState.disabled:
-              return widget.style?.shadowColor;
-            case ButtonState.idle:
-              return widget.style?.shadowColor;
-            case ButtonState.loading:
-              return widget.loadingStyle?.style?.shadowColor ??
-                  getValue(ButtonState.idle);
-            case ButtonState.success:
-              return widget.successStyle?.style?.shadowColor ??
-                  getValue(ButtonState.idle);
-            case ButtonState.failure:
-              return widget.failureStyle?.style?.shadowColor ??
-                  getValue(ButtonState.idle);
-          }
-        }
-
-        return getValue(currentButtonState);
-      }(),
-      surfaceTintColor:
-          MaterialStateProperty.all(_surfaceTintColorAnimation.value),
       animationDuration: () {
         Duration? getValue(ButtonState buttonState) {
           switch (buttonState) {
@@ -602,18 +595,24 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
             case ButtonState.idle:
               return widget.style?.animationDuration;
             case ButtonState.loading:
-              return widget.loadingStyle?.style?.animationDuration ??
+              return (widget.loadingStyleBuilder?.call(_data)?.style ??
+                          widget.loadingStyle?.style)
+                      ?.animationDuration ??
                   getValue(ButtonState.idle);
             case ButtonState.success:
-              return widget.successStyle?.style?.animationDuration ??
+              return (widget.successStyleBuilder?.call(_data)?.style ??
+                          widget.successStyle?.style)
+                      ?.animationDuration ??
                   getValue(ButtonState.idle);
             case ButtonState.failure:
-              return widget.failureStyle?.style?.animationDuration ??
+              return (widget.failureStyleBuilder?.call(_data)?.style ??
+                          widget.failureStyle?.style)
+                      ?.animationDuration ??
                   getValue(ButtonState.idle);
           }
         }
 
-        return getValue(currentButtonState);
+        return getValue(currentButtonState) ?? Duration.zero;
       }(),
       enableFeedback: () {
         bool? getValue(ButtonState buttonState) {
@@ -623,13 +622,19 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
             case ButtonState.idle:
               return widget.style?.enableFeedback;
             case ButtonState.loading:
-              return widget.loadingStyle?.style?.enableFeedback ??
+              return (widget.loadingStyleBuilder?.call(_data)?.style ??
+                          widget.loadingStyle?.style)
+                      ?.enableFeedback ??
                   getValue(ButtonState.idle);
             case ButtonState.success:
-              return widget.successStyle?.style?.enableFeedback ??
+              return (widget.successStyleBuilder?.call(_data)?.style ??
+                          widget.successStyle?.style)
+                      ?.enableFeedback ??
                   getValue(ButtonState.idle);
             case ButtonState.failure:
-              return widget.failureStyle?.style?.enableFeedback ??
+              return (widget.failureStyleBuilder?.call(_data)?.style ??
+                          widget.failureStyle?.style)
+                      ?.enableFeedback ??
                   getValue(ButtonState.idle);
           }
         }
@@ -644,13 +649,19 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
             case ButtonState.idle:
               return widget.style?.splashFactory;
             case ButtonState.loading:
-              return widget.loadingStyle?.style?.splashFactory ??
+              return (widget.loadingStyleBuilder?.call(_data)?.style ??
+                          widget.loadingStyle?.style)
+                      ?.splashFactory ??
                   getValue(ButtonState.idle);
             case ButtonState.success:
-              return widget.successStyle?.style?.splashFactory ??
+              return (widget.successStyleBuilder?.call(_data)?.style ??
+                          widget.successStyle?.style)
+                      ?.splashFactory ??
                   getValue(ButtonState.idle);
             case ButtonState.failure:
-              return widget.failureStyle?.style?.splashFactory ??
+              return (widget.failureStyleBuilder?.call(_data)?.style ??
+                          widget.failureStyle?.style)
+                      ?.splashFactory ??
                   getValue(ButtonState.idle);
           }
         }

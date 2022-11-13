@@ -10,8 +10,11 @@ class AsyncOutlinedButton extends AsyncButtonCore {
   const AsyncOutlinedButton({
     super.key,
     super.loadingStyle,
+    super.loadingStyleBuilder,
     super.successStyle,
+    super.successStyleBuilder,
     super.failureStyle,
+    super.failureStyleBuilder,
     super.style,
     required super.onPressed,
     required super.child,

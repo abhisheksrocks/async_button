@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// The [style]'s [ButtonStyle.fixedSize], [ButtonStyle.textStyle] and [ButtonStyle.visualDensity]
-/// arguments won't have any effect.
+/// NOTE
+///
+/// For argument [style], the follwing [ButtonStyle]'s arguments won't have any
+/// effect:-
+/// [ButtonStyle.fixedSize]
+/// [ButtonStyle.textStyle]
+/// [ButtonStyle.visualDensity]
+///
+///
 class AsyncButtonStateStyle {
   /// Defines the [ButtonStyle] to use when the [ButtonState] corresponds to this style
   ///

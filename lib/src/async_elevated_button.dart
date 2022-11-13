@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'core/async_button_core_abstract.dart';
 import 'core/async_button_state_controller_abstract.dart';
 import 'helpers/async_button_state_style.dart';
@@ -9,8 +10,11 @@ class AsyncElevatedButton extends AsyncButtonCore {
   const AsyncElevatedButton({
     super.key,
     super.loadingStyle,
+    super.loadingStyleBuilder,
     super.successStyle,
+    super.successStyleBuilder,
     super.failureStyle,
+    super.failureStyleBuilder,
     super.style,
     required super.onPressed,
     required super.child,
