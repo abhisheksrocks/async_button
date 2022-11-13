@@ -305,7 +305,7 @@ In the above example:
 - There are **2** failure styles - 'Network Error', 'Wrong Password'
 - There is **1** success style - 'Welcome, \<CustomName\>!' (Note that 'Abhishek' is provided at runtime)
 
-Let's see how to create something like this. We'll also use fallback styles and widgets.
+Lets see how to create something like this. We'll also use fallback styles and widgets.
 
 ```dart
 AsyncOutlinedButton(
