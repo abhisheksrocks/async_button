@@ -97,7 +97,7 @@ AsyncElevatedButton(
 );
 ```
 
-Too much? You can make use of the following constructor instead. This has some pre-defined styles
+Too much? We have created a custom constructor that uses the exact values for `loadingStyle`, `successStyle` and `failureStyle` as above
 
 ```dart
 AsyncElevatedButton.withDefaultStyles(
@@ -116,7 +116,7 @@ AsyncElevatedButton.withDefaultStyles(
 
 ## **AsyncTextButton**
 
-Just like TextButton, but for async onPressed
+And this is our version of async TextButton
 
 ```dart
 AsyncTextButton(
@@ -185,7 +185,7 @@ AsyncTextButton(
 );
 ```
 
-Here again, you can use the following constructor which has some pre-defined styles
+Here again, you can use the following constructor instead
 
 ```dart
 AsyncTextButton.withDefaultStyles(
@@ -204,7 +204,7 @@ AsyncTextButton.withDefaultStyles(
 
 ## **AsyncOutlinedButton**
 
-Just like OutlinedButton, but for async onPressed
+Similarly, here's one for async OutlinedButton
 
 ```dart
 AsyncOutlinedButton(
@@ -272,7 +272,7 @@ AsyncOutlinedButton(
 );
 ```
 
-Here as well, there is an alternative constructor with some pre-defined styles
+Here as well, there is an alternative constructor
 
 ```dart
 AsyncOutlinedButton.withDefaultStyles(
@@ -287,6 +287,252 @@ AsyncOutlinedButton.withDefaultStyles(
   },
   child: const Text('Execute'),
 );
+```
+
+# Other Examples
+
+All buttons also supports these arguments - `loadingStyleBuilder`, `successStyleBuilder` and `failureStyleBuilder` which creates the custom state styles at runtime. That essentially mean that one can create unlimited number of custom state widgets and styles based on different condition.
+
+There is also scope for fallback styles and widgets if none of the necessary conditions are met.
+
+## Login Button
+
+<img src='https://github.com/abhisheksrocks/async_button/blob/main/doc/gif/login_sample.gif?raw=true' width=100%>
+
+In the above example:
+
+- There is **1** loading style - 'Signing In...'
+- There are **2** failure styles - 'Network Error', 'Wrong Password'
+- There is **1** success style - 'Welcome, \<CustomName\>!' (Note that 'Abhishek' is provided at runtime)
+
+Let's see how to create something like this. We'll also use fallback styles and widgets.
+
+```dart
+AsyncOutlinedButton(
+  onPressed: (btnStateController) async {
+    btnStateController.update(ButtonState.loading);
+    try {
+      // Call your API here, in this example we are simply waiting
+      // for 2 seconds
+      await Future.delayed(const Duration(seconds: 2));
+
+      // To simulate randomness, we are making use of dart provided
+      // [Random] class.
+      // In the real world, these exception are of course thrown as per
+      // different conditions
+      int randomValue = Random().nextInt(5);
+      if (randomValue == 0) {
+        throw CustomNetworkException('Network Error');
+      }
+      if (randomValue == 1) {
+        throw CustomLoginException('Wrong Password');
+      }
+      if (randomValue == 2) {
+        // The following will invoke the default/fallback [failureStyle] as
+        // this case is not handled in [successStyleBuilder]
+        throw Exception('Unhandled exception');
+      }
+      if (randomValue == 3) {
+        // If we are using [successStyleBuilder], all the
+        // [btnStateController.update(ButtonState.success)] calls will
+        // eventually invoke it.
+        // Otherwise, it will simply use [failureStyle] data.
+        btnStateController.update(ButtonState.success, data: 'Abhishek');
+      }
+      // The following will invoke the default/fallback [successStyle] as
+      // this case is not handled in [successStyleBuilder]
+      btnStateController.update(ButtonState.success);
+    } on CustomNetworkException catch (e) {
+      // Handle this [CustomNetworkException] exception
+      //
+      // If we are using [failureStyleBuilder], all the
+      // [btnStateController.update(ButtonState.failure)] calls will
+      // eventually invoke it.
+      // Otherwise, it will simply use [failureStyle] data.
+      btnStateController.update(
+        ButtonState.failure,
+        data: e,
+      );
+    } on CustomLoginException catch (e) {
+      // Handle this [CustomLoginException] exception
+      //
+      // If we are using [failureStyleBuilder], all the
+      // [btnStateController.update(ButtonState.failure)] calls will
+      // eventually invoke it.
+      // Otherwise, it will simply use [failureStyle] data.
+      btnStateController.update(
+        ButtonState.failure,
+        data: e,
+      );
+    } catch (e) {
+      // Handle exception
+      //
+      // If we are using [failureStyleBuilder], all the
+      // [btnStateController.update(ButtonState.failure)] calls will
+      // eventually invoke it.
+      // Otherwise, it will simply use [failureStyle] data.
+      btnStateController.update(
+        ButtonState.failure,
+        data: e,
+      );
+    }
+  },
+
+  // Since for the given example, we don't need a runtime loading style,
+  // we make use of the [loadingStyle] property.
+  loadingStyle: AsyncButtonStateStyle(
+    style: OutlinedButton.styleFrom(
+      backgroundColor: const Color(0xFFC4D8F6),
+      foregroundColor: const Color(0xFF006bff),
+    ),
+    widget: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        SizedBox.square(
+          dimension: 24,
+          child: CircularProgressIndicator.adaptive(
+            backgroundColor: Color(0xFF006bff),
+          ),
+        ),
+        SizedBox(
+          width: 4,
+        ),
+        Text('Signing in...'),
+      ],
+    ),
+  ),
+
+  // It's a good measure to use [failureStyle]. This also acts as a fallback
+  // failure style if [failureStyleBuilder]'s returned value is null.
+
+  // If this value is null, we fallback to button's [child] value.
+  failureStyle: AsyncButtonStateStyle(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: Colors.white,
+      backgroundColor: const Color(0xFFFF3B30),
+    ),
+    widget: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        Icon(
+          Icons.error,
+        ),
+        SizedBox(
+          width: 4,
+        ),
+        Text('Error Occurred!'),
+      ],
+    ),
+  ),
+
+  // This function is executed at runtime, and can also return null, in
+  // which case [failureStyle] value will be used.
+  failureStyleBuilder: (data) {
+    // Any onPressed's [btnStateController.update(ButtonState.failure)]
+    // eventually invokes this builder function.
+
+    if (data is CustomNetworkException) {
+      return AsyncButtonStateStyle(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.amber,
+        ),
+        widget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.signal_cellular_connected_no_internet_0_bar,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(data.message),
+          ],
+        ),
+      );
+    }
+    if (data is CustomLoginException) {
+      return AsyncButtonStateStyle(
+        widget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.warning,
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Text(data.message),
+          ],
+        ),
+      );
+    }
+    // For any unhandled [data] value we can return null.
+    return null;
+  },
+
+  // It's a good measure to use [successStyle]. This also acts as a fallback
+  // failure style if [successStyleBuilder]'s returned value is null.
+
+  // If this value is null, we fallback to button's [child] value.
+  successStyle: AsyncButtonStateStyle(
+    style: OutlinedButton.styleFrom(
+      backgroundColor: Colors.green,
+    ),
+    widget: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        Text('Logged In!'),
+      ],
+    ),
+  ),
+
+  // This function is executed at runtime, and can also return null, in
+  // which case [successStyle] value will be used.
+  successStyleBuilder: (data) {
+    if (data is String) {
+      return AsyncButtonStateStyle(
+        widget: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Welcome, $data!'),
+          ],
+        ),
+      );
+    }
+
+    // For any unhandled [data] value we can return null.
+    return null;
+  },
+  style: OutlinedButton.styleFrom(
+    padding: const EdgeInsets.all(16),
+    backgroundColor: const Color(0xFF006bff),
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(100),
+      side: BorderSide.none,
+    ),
+    textStyle: const TextStyle(
+      fontSize: 20,
+    ),
+  ),
+  child: const Text('Login'),
+);
+
+// For this example we created the following 2 custom exceptions
+// In a real-world project one may make use of a different example
+
+class CustomNetworkException implements Exception {
+  final String message;
+
+  CustomNetworkException(this.message);
+}
+
+class CustomLoginException implements Exception {
+  final String message;
+
+  CustomLoginException(this.message);
+}
+
 ```
 
 # Similar Projects
