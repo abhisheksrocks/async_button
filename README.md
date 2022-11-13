@@ -289,11 +289,11 @@ AsyncOutlinedButton.withDefaultStyles(
 );
 ```
 
-# Other Examples
+# More Intuitive Examples
 
-All buttons also supports these arguments - `loadingStyleBuilder`, `successStyleBuilder` and `failureStyleBuilder` which creates the custom state styles at runtime. That essentially mean that one can create unlimited number of custom state widgets and styles based on different condition.
+All buttons also supports these arguments - `loadingStyleBuilder`, `successStyleBuilder` and `failureStyleBuilder` which creates the custom state styles at runtime. This essentially mean that one can create unlimited number of custom state widgets and styles based on different conditions.
 
-There is also scope for fallback styles and widgets if none of the necessary conditions are met.
+There are also scopes for fallback styles and widgets if none of the necessary conditions are met.
 
 ## Login Button
 
@@ -329,7 +329,7 @@ AsyncOutlinedButton(
       }
       if (randomValue == 2) {
         // The following will invoke the default/fallback [failureStyle] as
-        // this case is not handled in [successStyleBuilder]
+        // this case is not handled in [failureStyleBuilder]
         throw Exception('Unhandled exception');
       }
       if (randomValue == 3) {
@@ -519,7 +519,7 @@ AsyncOutlinedButton(
 );
 
 // For this example we created the following 2 custom exceptions
-// In a real-world project one may make use of a different example
+// In a real-world project one may encounter different exceptions
 
 class CustomNetworkException implements Exception {
   final String message;
