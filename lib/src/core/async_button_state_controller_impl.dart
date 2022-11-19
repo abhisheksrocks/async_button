@@ -54,5 +54,6 @@ class MainAsyncButtonStateController extends AsyncButtonStateController {
 
     //
     required super.postUpdateCallback,
+    required super.mountedFinder,
   });
 }

@@ -394,8 +394,9 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
   @override
   @mustCallSuper
   void dispose() {
-    super.dispose();
+    _animationController.removeListener(() {});
     _animationController.dispose();
+    super.dispose();
   }
 
   Widget _renderButtonChild(ButtonState buttonState) {
@@ -503,12 +504,15 @@ abstract class AsyncButtonCoreState extends State<AsyncButtonCore>
                 currentButtonState = updatedBtnState;
                 _data = data;
               },
+              mountedFinder: () => mounted,
             );
             isExecuting = true;
             await widget.onPressed?.call(controller);
             if (widget.switchBackAfterCompletion) {
               await Future.delayed(widget.switchBackDelay);
-              controller.update(ButtonState.idle);
+              if (mounted) {
+                controller.update(ButtonState.idle);
+              }
             }
             isExecuting = false;
           };

@@ -124,6 +124,9 @@ abstract class AsyncButtonStateController {
   final void Function(ButtonState updatedBtnState, dynamic data)
       postUpdateCallback;
 
+  /// Function to check if the widget is currently mounted or not
+  final bool Function() mountedFinder;
+
   /// Creates an [AsyncButtonStateController]
   AsyncButtonStateController({
     required this.animationController,
@@ -169,6 +172,7 @@ abstract class AsyncButtonStateController {
 
     //
     required this.postUpdateCallback,
+    required this.mountedFinder,
   });
 
   /// Updates the button's current [ButtonState] to [nextState]
@@ -410,7 +414,9 @@ abstract class AsyncButtonStateController {
     maximumSizeTween.end ??= buttonStyle.maximumSize?.resolve({});
     borderSideTween.end ??= buttonStyle.side?.resolve({});
 
-    animationController.forward(from: 0);
+    if (mountedFinder()) {
+      animationController.forward(from: 0);
+    }
     postUpdateCallback(nextState, data);
   }
 }

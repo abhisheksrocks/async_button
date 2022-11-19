@@ -1,3 +1,7 @@
+## 1.0.1-beta.2
+
+- Stability improvements and bug fixes
+
 ## 1.0.1-beta.1
 
 - Introduced new arguments in classes `AsyncElevatedButton`, `AsyncTextButton` and `AsyncOutlinedButton`:
