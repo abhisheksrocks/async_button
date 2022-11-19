@@ -1,3 +1,7 @@
+## (next)
+
+- Documentation correction
+
 ## 1.0.1-beta.2
 
 - Stability improvements and bug fixes

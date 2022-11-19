@@ -336,7 +336,7 @@ AsyncOutlinedButton(
         // If we are using [successStyleBuilder], all the
         // [btnStateController.update(ButtonState.success)] calls will
         // eventually invoke it.
-        // Otherwise, it will simply use [failureStyle] data.
+        // Otherwise, it will simply use [successStyle] data.
         btnStateController.update(ButtonState.success, data: 'Abhishek');
       }
       // The following will invoke the default/fallback [successStyle] as
