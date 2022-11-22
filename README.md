@@ -489,6 +489,9 @@ AsyncOutlinedButton(
   // This function is executed at runtime, and can also return null, in
   // which case [successStyle] value will be used.
   successStyleBuilder: (data) {
+    // Any onPressed's [btnStateController.update(ButtonState.success)]
+    // eventually invokes this builder function.
+
     if (data is String) {
       return AsyncButtonStateStyle(
         widget: Row(
