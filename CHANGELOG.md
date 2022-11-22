@@ -1,6 +1,7 @@
 ## (next)
 
 - Documentation correction
+- Minor improvements
 
 ## 1.0.1-beta.2
 

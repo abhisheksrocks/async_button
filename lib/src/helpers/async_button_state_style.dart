@@ -21,7 +21,7 @@ class AsyncButtonStateStyle {
   final Widget? widget;
 
   /// Creates an [AsyncButtonStateStyle]
-  AsyncButtonStateStyle({
+  const AsyncButtonStateStyle({
     this.style,
     this.widget,
   });
