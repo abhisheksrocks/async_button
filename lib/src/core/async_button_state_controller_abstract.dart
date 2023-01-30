@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../source/helpers/custom_border_side_tween.dart';
 import '../helpers/async_button_state_style.dart';
 import '../helpers/constants.dart';
-import '../helpers/custom_border_side_tween.dart';
 
 // ? Why some of the code is commented?
 // * It was noticed that many of the button style attributes didn't need any

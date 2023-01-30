@@ -5,6 +5,10 @@ import 'core/async_button_state_controller_abstract.dart';
 import 'helpers/async_button_state_style.dart';
 
 /// Implements [ElevatedButton] for asynchronous [onPressed]
+@Deprecated(
+  'Use AsyncElevatedBtn instead. '
+  'This feature was deprecated after v1.0.1-beta.2',
+)
 class AsyncElevatedButton extends AsyncButtonCore {
   /// Creates an [AsyncElevatedButton]
   const AsyncElevatedButton({
@@ -135,7 +139,9 @@ class _AsyncElevatedButtonState extends AsyncButtonCoreState {
   ButtonStyleButton makeButton(Widget child) {
     return ElevatedButton(
       onPressed: onPressed(),
+      // onPressed: null,
       style: makeButtonStyle(),
+      // child: Text('execture'),
       child: child,
     );
   }

@@ -1,5 +1,11 @@
 ## (next)
 
+> Deprecated `AsyncElevatedButton`, `AsyncTextButton` and `AsyncOutlinedButton`
+
+- Introduced
+  - `AsyncElevatedBtn` to replace `AsyncElevatedButton`
+  - `AsyncTextBtn` to replace `AsyncTextButton`
+  - `AsyncOutlinedBtn` to replace `AsyncOutlinedButton`
 - Documentation correction
 - Minor improvements
 

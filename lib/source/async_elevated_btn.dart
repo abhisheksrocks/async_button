@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'core/async_button_core_abstract.dart';
-import 'core/async_button_state_controller_abstract.dart';
-import 'helpers/async_button_state_style.dart';
+import 'core/async_btn_core_abstract.dart';
+import 'core/async_btn_states_controller.dart';
+import 'helpers/async_btn_state_style.dart';
 
-/// Implements [TextButton] for asynchronous [onPressed]
-@Deprecated(
-  'Use AsyncTextBtn instead. '
-  'This feature was deprecated after v1.0.1-beta.2',
-)
-class AsyncTextButton extends AsyncButtonCore {
-  /// Creates an [AsyncTextButton]
-  const AsyncTextButton({
+/// Implements [ElevatedButton] for asynchronous [onPressed]
+class AsyncElevatedBtn extends AsyncBtnCore {
+  /// Creates an [AsyncElevatedBtn]
+  const AsyncElevatedBtn({
     super.key,
     super.loadingStyle,
     super.loadingStyleBuilder,
@@ -34,16 +30,19 @@ class AsyncTextButton extends AsyncButtonCore {
     super.switchOutAnimationDuration,
     super.layoutBuilder,
     super.transitionBuilder,
+    super.onLongPress,
+    super.materialStatesController,
+    super.styleBuilder,
+    super.asyncBtnStatesController,
   });
 
-  /// Same as [AsyncOutlinedButton()] but with sample values for [loadingStyle],
+  /// Same as [AsyncElevatedButton()] but with sample values for [loadingStyle],
   /// [successStyle] and [failureStyle].
-  factory AsyncTextButton.withDefaultStyles({
+  factory AsyncElevatedBtn.withDefaultStyles({
     Key? key,
-    required Future<void> Function(
-            AsyncButtonStateController btnStateController)?
-        onPressed,
+    required Future<void> Function()? onPressed,
     required Widget child,
+    Future<void> Function()? onLongPress,
     bool switchBackAfterCompletion = true,
     Duration switchBackDelay = const Duration(seconds: 2),
     bool lockWhileAlreadyExecuting = true,
@@ -56,15 +55,18 @@ class AsyncTextButton extends AsyncButtonCore {
     Curve switchOutAnimationCurve = Curves.ease,
     ButtonStyle? style,
     Widget Function(Widget? currentChild, List<Widget> previousChildren)
-        layoutBuilder = AsyncButtonCore.defaultLayoutBuilder,
+        layoutBuilder = AsyncBtnCore.defaultLayoutBuilder,
     Widget Function(Widget child, Animation<double> animation)
-        transitionBuilder = AsyncButtonCore.defaultTransitionBuilder,
+        transitionBuilder = AsyncBtnCore.defaultTransitionBuilder,
+    MaterialStatesController? materialStatesController,
+    AsyncBtnStatesController? asyncBtnStatesController,
   }) {
-    return AsyncTextButton(
+    return AsyncElevatedBtn(
       onPressed: onPressed,
-      failureStyle: AsyncButtonStateStyle(
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.red,
+      failureStyle: AsyncBtnStateStyle(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
         ),
         widget: Row(
           mainAxisSize: MainAxisSize.min,
@@ -75,20 +77,21 @@ class AsyncTextButton extends AsyncButtonCore {
           ],
         ),
       ),
-      loadingStyle: AsyncButtonStateStyle(
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.amber,
+      loadingStyle: AsyncBtnStateStyle(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.amber,
         ),
         widget: const SizedBox.square(
           dimension: 24,
           child: CircularProgressIndicator(
-            color: Colors.amber,
+            color: Colors.white,
           ),
         ),
       ),
-      successStyle: AsyncButtonStateStyle(
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.green,
+      successStyle: AsyncBtnStateStyle(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
         ),
         widget: Row(
           mainAxisSize: MainAxisSize.min,
@@ -113,18 +116,21 @@ class AsyncTextButton extends AsyncButtonCore {
       switchOutAnimationCurve: switchOutAnimationCurve,
       transitionBuilder: transitionBuilder,
       layoutBuilder: layoutBuilder,
+      onLongPress: onLongPress,
+      asyncBtnStatesController: asyncBtnStatesController,
+      materialStatesController: materialStatesController,
       child: child,
     );
   }
 
   @override
-  State<AsyncButtonCore> createState() => _AsyncTextButtonState();
+  State<AsyncBtnCore> createState() => _AsyncElevatedButtonState();
 }
 
-class _AsyncTextButtonState extends AsyncButtonCoreState {
-  static const _simpleButton = TextButton(
+class _AsyncElevatedButtonState extends AsyncBtnCoreState {
+  static const _simpleButton = ElevatedButton(
     onPressed: null,
-    child: SizedBox(),
+    child: null,
   );
 
   @override
@@ -135,9 +141,12 @@ class _AsyncTextButtonState extends AsyncButtonCoreState {
 
   @override
   ButtonStyleButton makeButton(Widget child) {
-    return TextButton(
+    return ElevatedButton(
+      statesController: widget.materialStatesController,
       onPressed: onPressed(),
+      onLongPress: onLongPressed(),
       style: makeButtonStyle(),
+      // onPressed: widget.onPressed,
       child: child,
     );
   }
