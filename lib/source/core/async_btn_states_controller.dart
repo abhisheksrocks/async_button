@@ -40,7 +40,7 @@ class AsyncBtnStatesController extends ValueNotifier<AsyncBtnStateModel?> {
               : AsyncBtnStateModel(defaultButtonState, data: data),
         );
 
-  /// Updates the button's current [ButtonState] to [nextState]
+  /// Updates the button's current [buttonState] to next
   /// [data] is relevant, if you are using builder styles
   void update(
     AsyncBtnState buttonState, {

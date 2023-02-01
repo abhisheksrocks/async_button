@@ -1019,7 +1019,9 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         _borderSideTween.end ??=
             _buttonStyle.side?.resolve(statesController.value);
 
-        _animationController.value = 1;
+        if (_animationController.value != 1) {
+          _animationController.value = 1;
+        }
       });
     }
   }
@@ -1483,10 +1485,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             await widget.onPressed?.call();
             if (widget.switchBackAfterCompletion) {
               await Future.delayed(widget.switchBackDelay);
-              if (mounted) {
-                // controller.update(NewButtonState.idle);
-                widget.asyncBtnStatesController?.update(AsyncBtnState.idle);
-              }
+              widget.asyncBtnStatesController?.update(AsyncBtnState.idle);
             }
             isExecuting = false;
           };
@@ -1502,10 +1501,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             await widget.onLongPress?.call();
             if (widget.switchBackAfterCompletion) {
               await Future.delayed(widget.switchBackDelay);
-              if (mounted) {
-                // controller.update(NewButtonState.idle);
-                widget.asyncBtnStatesController?.update(AsyncBtnState.idle);
-              }
+              widget.asyncBtnStatesController?.update(AsyncBtnState.idle);
             }
             isExecuting = false;
           };

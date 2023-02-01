@@ -25,19 +25,23 @@ This project provides you with the same buttons that you are used to, just with 
 
 This project provides you with 3 types of buttons. Let's list them below with an example.
 
-## **AsyncElevatedButton**
+## **AsyncElevatedBtn**
 
 Just like ElevatedButton, but for async onPressed
 
 ```dart
-AsyncElevatedButton(
-  onPressed: (AsyncButtonStateController btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncElevatedBtn(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Await your api call here
-      btnStateController.update(ButtonState.success);
+      await Future.delayed(const Duration(seconds: 2));
+      btnStateController.update(AsyncBtnState.success);
     } catch (e) {
-      btnStateController.update(ButtonState.failure);
+      btnStateController.update(AsyncBtnState.failure);
     }
   },
   // * It is NOT mandatory to define [loadingStyle, successStyle, failureStyle]
@@ -46,7 +50,7 @@ AsyncElevatedButton(
   // This should ideally be the button's loading state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  loadingStyle: AsyncButtonStateStyle(
+  loadingStyle: AsyncBtnStateStyle(
     style: ElevatedButton.styleFrom(
       backgroundColor: Colors.amber,
     ),
@@ -61,7 +65,7 @@ AsyncElevatedButton(
   // This should ideally be the button's success state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  successStyle: AsyncButtonStateStyle(
+  successStyle: AsyncBtnStateStyle(
     style: ElevatedButton.styleFrom(
       backgroundColor: Colors.green,
       foregroundColor: Colors.white,
@@ -79,7 +83,7 @@ AsyncElevatedButton(
   // This should ideally be the button's failure state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  failureStyle: AsyncButtonStateStyle(
+  failureStyle: AsyncBtnStateStyle(
     style: ElevatedButton.styleFrom(
       backgroundColor: Colors.red,
       foregroundColor: Colors.white,
@@ -100,33 +104,41 @@ AsyncElevatedButton(
 Too much? We have created a custom constructor that uses the exact values for `loadingStyle`, `successStyle` and `failureStyle` as above
 
 ```dart
-AsyncElevatedButton.withDefaultStyles(
-  onPressed: (AsyncButtonStateController btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncElevatedBtn.withDefaultStyles(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Await your api call here
-      btnStateController.update(ButtonState.success);
+      await Future.delayed(const Duration(seconds: 2));
+      btnStateController.update(AsyncBtnState.success);
     } catch (e) {
-      btnStateController.update(ButtonState.failure);
+      btnStateController.update(AsyncBtnState.failure);
     }
   },
   child: const Text('Execute'),
 );
 ```
 
-## **AsyncTextButton**
+## **AsyncTextBtn**
 
 And this is our version of async TextButton
 
 ```dart
-AsyncTextButton(
-  onPressed: (AsyncButtonStateController btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncTextBtn(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Await your api call here
-      btnStateController.update(ButtonState.success);
+      await Future.delayed(const Duration(seconds: 2));
+      btnStateController.update(AsyncBtnState.success);
     } catch (e) {
-      btnStateController.update(ButtonState.failure);
+      btnStateController.update(AsyncBtnState.failure);
     }
   },
   // * It is NOT mandatory to define [loadingStyle, successStyle, failureStyle]
@@ -135,7 +147,7 @@ AsyncTextButton(
   // This should ideally be the button's loading state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  loadingStyle: AsyncButtonStateStyle(
+  loadingStyle: AsyncBtnStateStyle(
     style: TextButton.styleFrom(
       foregroundColor: Colors.amber,
     ),
@@ -151,7 +163,7 @@ AsyncTextButton(
   // This should ideally be the button's success state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  successStyle: AsyncButtonStateStyle(
+  successStyle: AsyncBtnStateStyle(
     style: TextButton.styleFrom(
       foregroundColor: Colors.green,
     ),
@@ -168,7 +180,7 @@ AsyncTextButton(
   // This should ideally be the button's failure state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  failureStyle: AsyncButtonStateStyle(
+  failureStyle: AsyncBtnStateStyle(
     style: TextButton.styleFrom(
       foregroundColor: Colors.red,
     ),
@@ -188,33 +200,41 @@ AsyncTextButton(
 Here again, you can use the following constructor instead
 
 ```dart
-AsyncTextButton.withDefaultStyles(
-  onPressed: (AsyncButtonStateController btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncTextBtn.withDefaultStyles(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Await your api call here
-      btnStateController.update(ButtonState.success);
+      await Future.delayed(const Duration(seconds: 2));
+      btnStateController.update(AsyncBtnState.success);
     } catch (e) {
-      btnStateController.update(ButtonState.failure);
+      btnStateController.update(AsyncBtnState.failure);
     }
   },
   child: const Text('Execute'),
 );
 ```
 
-## **AsyncOutlinedButton**
+## **AsyncOutlinedBtn**
 
 Similarly, here's one for async OutlinedButton
 
 ```dart
-AsyncOutlinedButton(
-  onPressed: (AsyncButtonStateController btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncOutlinedBtn(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Await your api call here
-      btnStateController.update(ButtonState.success);
+      await Future.delayed(const Duration(seconds: 2));
+      btnStateController.update(AsyncBtnState.success);
     } catch (e) {
-      btnStateController.update(ButtonState.failure);
+      btnStateController.update(AsyncBtnState.failure);
     }
   },
   // * It is NOT mandatory to define [loadingStyle, successStyle, failureStyle]
@@ -223,7 +243,7 @@ AsyncOutlinedButton(
   // This should ideally be the button's loading state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  loadingStyle: AsyncButtonStateStyle(
+  loadingStyle: AsyncBtnStateStyle(
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.amber,
     ),
@@ -238,7 +258,7 @@ AsyncOutlinedButton(
   // This should ideally be the button's success state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  successStyle: AsyncButtonStateStyle(
+  successStyle: AsyncBtnStateStyle(
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.green,
     ),
@@ -255,7 +275,7 @@ AsyncOutlinedButton(
   // This should ideally be the button's failure state indicator.
   // If [style] or [widget] properties are not defined, we consider the button's
   // corresponding default [style] and [child] property
-  failureStyle: AsyncButtonStateStyle(
+  failureStyle: AsyncBtnStateStyle(
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.red,
     ),
@@ -275,14 +295,18 @@ AsyncOutlinedButton(
 Here as well, there is an alternative constructor
 
 ```dart
-AsyncOutlinedButton.withDefaultStyles(
-  onPressed: (AsyncButtonStateController btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncOutlinedBtn.withDefaultStyles(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Await your api call here
-      btnStateController.update(ButtonState.success);
+      await Future.delayed(const Duration(seconds: 2));
+      btnStateController.update(AsyncBtnState.success);
     } catch (e) {
-      btnStateController.update(ButtonState.failure);
+      btnStateController.update(AsyncBtnState.failure);
     }
   },
   child: const Text('Execute'),
@@ -308,9 +332,12 @@ In the above example:
 Lets see how to create something like this. We'll also use fallback styles and widgets.
 
 ```dart
-AsyncOutlinedButton(
-  onPressed: (btnStateController) async {
-    btnStateController.update(ButtonState.loading);
+AsyncBtnStatesController btnStateController = AsyncBtnStatesController();
+
+AsyncOutlinedBtn(
+  asyncBtnStatesController: btnStateController,
+  onPressed: () async {
+    btnStateController.update(AsyncBtnState.loading);
     try {
       // Call your API here, in this example we are simply waiting
       // for 2 seconds
@@ -334,45 +361,45 @@ AsyncOutlinedButton(
       }
       if (randomValue == 3) {
         // If we are using [successStyleBuilder], all the
-        // [btnStateController.update(ButtonState.success)] calls will
+        // [btnStateController.update(AsyncBtnState.success)] calls will
         // eventually invoke it.
         // Otherwise, it will simply use [successStyle] data.
-        btnStateController.update(ButtonState.success, data: 'Abhishek');
+        btnStateController.update(AsyncBtnState.success, data: 'Abhishek');
       }
       // The following will invoke the default/fallback [successStyle] as
       // this case is not handled in [successStyleBuilder]
-      btnStateController.update(ButtonState.success);
+      btnStateController.update(AsyncBtnState.success);
     } on CustomNetworkException catch (e) {
       // Handle this [CustomNetworkException] exception
       //
       // If we are using [failureStyleBuilder], all the
-      // [btnStateController.update(ButtonState.failure)] calls will
+      // [btnStateController.update(AsyncBtnState.failure)] calls will
       // eventually invoke it.
       // Otherwise, it will simply use [failureStyle] data.
       btnStateController.update(
-        ButtonState.failure,
+        AsyncBtnState.failure,
         data: e,
       );
     } on CustomLoginException catch (e) {
       // Handle this [CustomLoginException] exception
       //
       // If we are using [failureStyleBuilder], all the
-      // [btnStateController.update(ButtonState.failure)] calls will
+      // [btnStateController.update(AsyncBtnState.failure)] calls will
       // eventually invoke it.
       // Otherwise, it will simply use [failureStyle] data.
       btnStateController.update(
-        ButtonState.failure,
+        AsyncBtnState.failure,
         data: e,
       );
     } catch (e) {
       // Handle exception
       //
       // If we are using [failureStyleBuilder], all the
-      // [btnStateController.update(ButtonState.failure)] calls will
+      // [btnStateController.update(AsyncBtnState.failure)] calls will
       // eventually invoke it.
       // Otherwise, it will simply use [failureStyle] data.
       btnStateController.update(
-        ButtonState.failure,
+        AsyncBtnState.failure,
         data: e,
       );
     }
@@ -380,7 +407,7 @@ AsyncOutlinedButton(
 
   // Since for the given example, we don't need a runtime loading style,
   // we make use of the [loadingStyle] property.
-  loadingStyle: AsyncButtonStateStyle(
+  loadingStyle: AsyncBtnStateStyle(
     style: OutlinedButton.styleFrom(
       backgroundColor: const Color(0xFFC4D8F6),
       foregroundColor: const Color(0xFF006bff),
@@ -406,7 +433,7 @@ AsyncOutlinedButton(
   // failure style if [failureStyleBuilder]'s returned value is null.
 
   // If this value is null, we fallback to button's [child] value.
-  failureStyle: AsyncButtonStateStyle(
+  failureStyle: AsyncBtnStateStyle(
     style: OutlinedButton.styleFrom(
       foregroundColor: Colors.white,
       backgroundColor: const Color(0xFFFF3B30),
@@ -428,11 +455,11 @@ AsyncOutlinedButton(
   // This function is executed at runtime, and can also return null, in
   // which case [failureStyle] value will be used.
   failureStyleBuilder: (data) {
-    // Any onPressed's [btnStateController.update(ButtonState.failure)]
+    // Any onPressed's [btnStateController.update(AsyncBtnState.failure)]
     // eventually invokes this builder function.
 
     if (data is CustomNetworkException) {
-      return AsyncButtonStateStyle(
+      return AsyncBtnStateStyle(
         style: OutlinedButton.styleFrom(
           backgroundColor: Colors.amber,
         ),
@@ -451,7 +478,7 @@ AsyncOutlinedButton(
       );
     }
     if (data is CustomLoginException) {
-      return AsyncButtonStateStyle(
+      return AsyncBtnStateStyle(
         widget: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -474,7 +501,7 @@ AsyncOutlinedButton(
   // failure style if [successStyleBuilder]'s returned value is null.
 
   // If this value is null, we fallback to button's [child] value.
-  successStyle: AsyncButtonStateStyle(
+  successStyle: AsyncBtnStateStyle(
     style: OutlinedButton.styleFrom(
       backgroundColor: Colors.green,
     ),
@@ -489,11 +516,11 @@ AsyncOutlinedButton(
   // This function is executed at runtime, and can also return null, in
   // which case [successStyle] value will be used.
   successStyleBuilder: (data) {
-    // Any onPressed's [btnStateController.update(ButtonState.success)]
+    // Any onPressed's [btnStateController.update(AsyncBtnState.success)]
     // eventually invokes this builder function.
 
     if (data is String) {
-      return AsyncButtonStateStyle(
+      return AsyncBtnStateStyle(
         widget: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

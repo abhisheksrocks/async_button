@@ -6,8 +6,9 @@
   - `AsyncElevatedBtn` to replace `AsyncElevatedButton`
   - `AsyncTextBtn` to replace `AsyncTextButton`
   - `AsyncOutlinedBtn` to replace `AsyncOutlinedButton`
-- Documentation correction
-- Minor improvements
+- Also introduced builder argument `styleBuilder` for button's idle state in all button classes
+- Button style accuracy and performance improvements
+- Documentation corrections
 
 ## 1.0.1-beta.2
 

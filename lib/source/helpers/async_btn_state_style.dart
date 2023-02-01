@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'constants.dart';
 
-/// NOTE
+/// Binds [ButtonStyle] and a [Widget]. Typically used in custom buttons.
 ///
-/// For argument [style], the follwing [ButtonStyle]'s arguments won't have any
+/// NOTE that for argument [style], the follwing [ButtonStyle]'s arguments won't have any
 /// effect:-
 /// [ButtonStyle.fixedSize]
 /// [ButtonStyle.textStyle]
@@ -10,12 +11,12 @@ import 'package:flutter/material.dart';
 ///
 ///
 class AsyncBtnStateStyle {
-  /// Defines the [ButtonStyle] to use when the [ButtonState] corresponds to this style
+  /// Defines the [ButtonStyle] to use when the [AsyncBtnState] corresponds to this style
   ///
   /// Can be null
   final ButtonStyle? style;
 
-  /// Defines the [Widget] to use when the [ButtonState] corresponds to this style
+  /// Defines the [Widget] to use when the [AsyncBtnState] corresponds to this style
   ///
   /// Can be null
   final Widget? widget;
