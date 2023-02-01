@@ -136,17 +136,17 @@ class _AsyncElevatedButtonState extends AsyncBtnCoreState {
   @override
   ButtonStyle intializeButtonStyle() {
     return (widget.style ?? const ButtonStyle())
+        .merge(_simpleButton.themeStyleOf(context))
         .merge(_simpleButton.defaultStyleOf(context));
   }
 
   @override
   ButtonStyleButton makeButton(Widget child) {
     return ElevatedButton(
-      statesController: widget.materialStatesController,
       onPressed: onPressed(),
       onLongPress: onLongPressed(),
       style: makeButtonStyle(),
-      // onPressed: widget.onPressed,
+      statesController: statesController,
       child: child,
     );
   }

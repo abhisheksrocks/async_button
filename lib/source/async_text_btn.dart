@@ -134,6 +134,7 @@ class _AsyncTextButtonState extends AsyncBtnCoreState {
   @override
   ButtonStyle intializeButtonStyle() {
     return (widget.style ?? const ButtonStyle())
+        .merge(_simpleButton.themeStyleOf(context))
         .merge(_simpleButton.defaultStyleOf(context));
   }
 
@@ -143,7 +144,7 @@ class _AsyncTextButtonState extends AsyncBtnCoreState {
       onPressed: onPressed(),
       style: makeButtonStyle(),
       onLongPress: onLongPressed(),
-      statesController: widget.materialStatesController,
+      statesController: statesController,
       child: child,
     );
   }

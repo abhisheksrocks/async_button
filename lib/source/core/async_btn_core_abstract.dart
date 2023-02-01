@@ -51,8 +51,10 @@ abstract class AsyncBtnCore extends StatefulWidget {
   /// To change the kind of transition used, see [transitionBuilder].
   final Widget child;
 
+  /// Used to manipulate button's styles
   final AsyncBtnStatesController? asyncBtnStatesController;
 
+  /// {@macro flutter.material.inkwell.statesController}
   final MaterialStatesController? materialStatesController;
 
   /// Defines the corresponding style for if button's current [AsyncBtnState] is
@@ -282,15 +284,16 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
 
   MaterialStatesController? _internalStatesController;
 
-  MaterialStatesController get _statesController =>
+  /// Getter for the current [MaterialStatesController]
+  MaterialStatesController get statesController =>
       widget.materialStatesController ?? _internalStatesController!;
 
   void _initStatesController() {
     if (widget.materialStatesController == null) {
       _internalStatesController = MaterialStatesController();
     }
-    _statesController.update(MaterialState.disabled, !widget.enabled);
-    _statesController.addListener(
+    statesController.update(MaterialState.disabled, !widget.enabled);
+    statesController.addListener(
       () {
         materialStatesUpdater();
       },
@@ -335,10 +338,10 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
     }
 
     if (widget.enabled != oldWidget.enabled) {
-      _statesController.update(MaterialState.disabled, !widget.enabled);
+      statesController.update(MaterialState.disabled, !widget.enabled);
       if (!widget.enabled) {
         // The button may have been disabled while a press gesture is currently underway.
-        _statesController.update(MaterialState.pressed, false);
+        statesController.update(MaterialState.pressed, false);
       }
     }
     super.didUpdateWidget(oldWidget);
@@ -357,44 +360,44 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.backgroundColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _foregroundColorTween.begin = _foregroundColorTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.foregroundColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _overlayColorTween.begin = _overlayColorTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.overlayColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _elevationTween.begin = _elevationTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.elevation
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _shadowColorTween.begin = _shadowColorTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.shadowColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _shapeBorderTween.begin = _shapeBorderTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.shape
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _surfaceTintColorTween.begin = _surfaceTintColorTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.surfaceTintColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
 
         // textStyleTween.begin = textStyleTween.end = (widget.loadingStyleBuilder?.call(data)?.style ?? loadingStyle?.style)?.textStyle?.resolve(statesController.value);
         _egdeInsetsGeometryTween.begin = _egdeInsetsGeometryTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.padding
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _alignmentGeometryTween.begin = _alignmentGeometryTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
@@ -404,61 +407,61 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.minimumSize
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _maximumSizeTween.begin = _maximumSizeTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.maximumSize
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _borderSideTween.begin = _borderSideTween.end =
             (widget.loadingStyleBuilder?.call(data)?.style ??
                     widget.loadingStyle?.style)
                 ?.side
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         break;
       case AsyncBtnState.success:
         _backgroundColorTween.begin = _backgroundColorTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.backgroundColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _foregroundColorTween.begin = _foregroundColorTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.foregroundColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _overlayColorTween.begin = _overlayColorTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.overlayColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _elevationTween.begin = _elevationTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.elevation
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _shadowColorTween.begin = _shadowColorTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.shadowColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _shapeBorderTween.begin = _shapeBorderTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.shape
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _surfaceTintColorTween.begin = _surfaceTintColorTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.surfaceTintColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
 
         // textStyleTween.begin = textStyleTween.end = (successStyleBuilder?.call(data)?.style ?? successStyle?.style)?.textStyle?.resolve(statesController.value);
         _egdeInsetsGeometryTween.begin = _egdeInsetsGeometryTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.padding
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _alignmentGeometryTween.begin = _alignmentGeometryTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
@@ -468,61 +471,61 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.minimumSize
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _maximumSizeTween.begin = _maximumSizeTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.maximumSize
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _borderSideTween.begin = _borderSideTween.end =
             (widget.successStyleBuilder?.call(data)?.style ??
                     widget.successStyle?.style)
                 ?.side
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         break;
       case AsyncBtnState.failure:
         _backgroundColorTween.begin = _backgroundColorTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.backgroundColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _foregroundColorTween.begin = _foregroundColorTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.foregroundColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _overlayColorTween.begin = _overlayColorTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.overlayColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _elevationTween.begin = _elevationTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.elevation
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _shadowColorTween.begin = _shadowColorTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.shadowColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _shapeBorderTween.begin = _shapeBorderTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.shape
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _surfaceTintColorTween.begin = _surfaceTintColorTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.surfaceTintColor
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
 
         // textStyleTween.begin = textStyleTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.textStyle?.resolve(statesController.value);
         _egdeInsetsGeometryTween.begin = _egdeInsetsGeometryTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.padding
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _alignmentGeometryTween.begin = _alignmentGeometryTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
@@ -532,97 +535,97 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.minimumSize
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _maximumSizeTween.begin = _maximumSizeTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.maximumSize
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         _borderSideTween.begin = _borderSideTween.end =
             (widget.failureStyleBuilder?.call(data)?.style ??
                     widget.failureStyle?.style)
                 ?.side
-                ?.resolve(_statesController.value);
+                ?.resolve(statesController.value);
         break;
       case AsyncBtnState.idle:
         _backgroundColorTween.begin = _backgroundColorTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.backgroundColor
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .backgroundColor
+                ?.resolve(statesController.value);
         _foregroundColorTween.begin = _foregroundColorTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.foregroundColor
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .foregroundColor
+                ?.resolve(statesController.value);
         _overlayColorTween.begin = _overlayColorTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.overlayColor
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .overlayColor
+                ?.resolve(statesController.value);
         _elevationTween.begin = _elevationTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.elevation
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .elevation
+                ?.resolve(statesController.value);
         _shadowColorTween.begin = _shadowColorTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.shadowColor
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .shadowColor
+                ?.resolve(statesController.value);
         _shapeBorderTween.begin = _shapeBorderTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.shape
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .shape
+                ?.resolve(statesController.value);
         _surfaceTintColorTween.begin = _surfaceTintColorTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.surfaceTintColor
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .surfaceTintColor
+                ?.resolve(statesController.value);
 
         // textStyleTween.begin = textStyleTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.textStyle?.resolve(statesController.value);
         _egdeInsetsGeometryTween.begin = _egdeInsetsGeometryTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.padding
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .padding
+                ?.resolve(statesController.value);
         _alignmentGeometryTween.begin = _alignmentGeometryTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)?.alignment;
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle).alignment;
         // fixedSizeTween.begin = fixedSizeTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.style?.fixedSize?.resolve(statesController.value);
         _minimumSizeTween.begin = _minimumSizeTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.minimumSize
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .minimumSize
+                ?.resolve(statesController.value);
         _maximumSizeTween.begin = _maximumSizeTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.maximumSize
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .maximumSize
+                ?.resolve(statesController.value);
         _borderSideTween.begin = _borderSideTween.end =
-            (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                ?.side
-                ?.resolve(_statesController.value);
+            (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                .side
+                ?.resolve(statesController.value);
     }
 
     _backgroundColorTween.begin ??= _backgroundColorTween.end ??=
-        _buttonStyle.backgroundColor?.resolve(_statesController.value);
+        _buttonStyle.backgroundColor?.resolve(statesController.value);
     _foregroundColorTween.begin ??= _foregroundColorTween.end ??=
-        _buttonStyle.foregroundColor?.resolve(_statesController.value);
+        _buttonStyle.foregroundColor?.resolve(statesController.value);
     _overlayColorTween.begin ??= _overlayColorTween.end ??=
-        _buttonStyle.overlayColor?.resolve(_statesController.value);
+        _buttonStyle.overlayColor?.resolve(statesController.value);
     _elevationTween.begin ??= _elevationTween.end ??=
-        _buttonStyle.elevation?.resolve(_statesController.value);
+        _buttonStyle.elevation?.resolve(statesController.value);
     _shadowColorTween.begin ??= _shadowColorTween.end ??=
-        _buttonStyle.shadowColor?.resolve(_statesController.value);
+        _buttonStyle.shadowColor?.resolve(statesController.value);
     _shapeBorderTween.begin ??= _shapeBorderTween.end ??=
-        _buttonStyle.shape?.resolve(_statesController.value);
+        _buttonStyle.shape?.resolve(statesController.value);
     _surfaceTintColorTween.begin ??= _surfaceTintColorTween.end ??=
-        _buttonStyle.surfaceTintColor?.resolve(_statesController.value);
+        _buttonStyle.surfaceTintColor?.resolve(statesController.value);
 
     // textStyleTween.begin ??= textStyleTween.end ??= _buttonStyle.textStyle?.resolve(statesController.value);
     _egdeInsetsGeometryTween.begin ??= _egdeInsetsGeometryTween.end ??=
-        _buttonStyle.padding?.resolve(_statesController.value);
+        _buttonStyle.padding?.resolve(statesController.value);
     _alignmentGeometryTween.begin ??=
         _alignmentGeometryTween.end ??= _buttonStyle.alignment;
     // fixedSizeTween.begin ??= fixedSizeTween.end ??= _buttonStyle.fixedSize?.resolve(statesController.value);
     _minimumSizeTween.begin ??= _minimumSizeTween.end ??=
-        _buttonStyle.minimumSize?.resolve(_statesController.value);
+        _buttonStyle.minimumSize?.resolve(statesController.value);
     _maximumSizeTween.begin ??= _maximumSizeTween.end ??=
-        _buttonStyle.maximumSize?.resolve(_statesController.value);
+        _buttonStyle.maximumSize?.resolve(statesController.value);
     _borderSideTween.begin ??= _borderSideTween.end ??=
-        _buttonStyle.side?.resolve(_statesController.value);
+        _buttonStyle.side?.resolve(statesController.value);
 
     // _backgroundColorTween.begin = _backgroundColorTween.end =
     //     widget.onPressed == null
@@ -708,20 +711,20 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
       AsyncBtnState nextState = currentButtonState;
       dynamic data = _data;
       setState(() {
-        _backgroundColorTween.begin = _backgroundColorAnimation.value;
-        _foregroundColorTween.begin = _foregroundColorAnimation.value;
-        _overlayColorTween.begin = _overlayColorAnimation.value;
-        _elevationTween.begin = _elevationAnimation.value;
-        _shadowColorTween.begin = _shadowColorAnimation.value;
-        _shapeBorderTween.begin = _shapeBorderAnimation.value;
-        _surfaceTintColorTween.begin = _surfaceTintColorAnimation.value;
-        // _textStyleTween.begin = _textStyleAnimation.value;
-        _egdeInsetsGeometryTween.begin = _egdeInsetsGeometryAnimation.value;
-        _alignmentGeometryTween.begin = _alignmentGeometryAnimation.value;
-        // _fixedSizeTween.begin = _fixedSizeAnimation.value;
-        _minimumSizeTween.begin = _minimumSizeAnimation.value;
-        _maximumSizeTween.begin = _maximumSizeAnimation.value;
-        _borderSideTween.begin = _borderSideAnimation.value;
+        // _backgroundColorTween.begin = _backgroundColorAnimation.value;
+        // _foregroundColorTween.begin = _foregroundColorAnimation.value;
+        // _overlayColorTween.begin = _overlayColorAnimation.value;
+        // _elevationTween.begin = _elevationAnimation.value;
+        // _shadowColorTween.begin = _shadowColorAnimation.value;
+        // _shapeBorderTween.begin = _shapeBorderAnimation.value;
+        // _surfaceTintColorTween.begin = _surfaceTintColorAnimation.value;
+        // // _textStyleTween.begin = _textStyleAnimation.value;
+        // _egdeInsetsGeometryTween.begin = _egdeInsetsGeometryAnimation.value;
+        // _alignmentGeometryTween.begin = _alignmentGeometryAnimation.value;
+        // // _fixedSizeTween.begin = _fixedSizeAnimation.value;
+        // _minimumSizeTween.begin = _minimumSizeAnimation.value;
+        // _maximumSizeTween.begin = _maximumSizeAnimation.value;
+        // _borderSideTween.begin = _borderSideAnimation.value;
 
         switch (nextState) {
           case AsyncBtnState.loading:
@@ -729,44 +732,44 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.overlayColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _elevationTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.elevation
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.shadowColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.shape
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (widget.loadingStyleBuilder?.call(data)?.style ?? loadingStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.padding
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
@@ -776,61 +779,61 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.minimumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.maximumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.side
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             break;
           case AsyncBtnState.success:
             _backgroundColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.overlayColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _elevationTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.elevation
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.shadowColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.shape
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (successStyleBuilder?.call(data)?.style ?? successStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.padding
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
@@ -840,61 +843,61 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.minimumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.maximumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.side
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             break;
           case AsyncBtnState.failure:
             _backgroundColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.overlayColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _elevationTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.elevation
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.shadowColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.shape
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.padding
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
@@ -904,69 +907,69 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.minimumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.maximumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.side
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             break;
           case AsyncBtnState.idle:
             _backgroundColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .backgroundColor
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .foregroundColor
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.overlayColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .overlayColor
+                    ?.resolve(statesController.value);
             _elevationTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.elevation
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .elevation
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.shadowColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .shadowColor
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.shape
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .shape
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .surfaceTintColor
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.padding
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .padding
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.alignment;
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .alignment;
             // fixedSizeTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.style?.fixedSize?.resolve(statesController.value);
             _minimumSizeTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.minimumSize
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .minimumSize
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.maximumSize
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .maximumSize
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.side
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .side
+                    ?.resolve(statesController.value);
           // break;
           // default:
           //   _backgroundColorTween.end =
@@ -990,39 +993,46 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         }
 
         _backgroundColorTween.end ??=
-            _buttonStyle.backgroundColor?.resolve(_statesController.value);
+            _buttonStyle.backgroundColor?.resolve(statesController.value);
         _foregroundColorTween.end ??=
-            _buttonStyle.foregroundColor?.resolve(_statesController.value);
+            _buttonStyle.foregroundColor?.resolve(statesController.value);
         _overlayColorTween.end ??=
-            _buttonStyle.overlayColor?.resolve(_statesController.value);
+            _buttonStyle.overlayColor?.resolve(statesController.value);
         _elevationTween.end ??=
-            _buttonStyle.elevation?.resolve(_statesController.value);
+            _buttonStyle.elevation?.resolve(statesController.value);
         _shadowColorTween.end ??=
-            _buttonStyle.shadowColor?.resolve(_statesController.value);
+            _buttonStyle.shadowColor?.resolve(statesController.value);
         _shapeBorderTween.end ??=
-            _buttonStyle.shape?.resolve(_statesController.value);
+            _buttonStyle.shape?.resolve(statesController.value);
         _surfaceTintColorTween.end ??=
-            _buttonStyle.surfaceTintColor?.resolve(_statesController.value);
+            _buttonStyle.surfaceTintColor?.resolve(statesController.value);
 
         // textStyleTween.end ??= _buttonStyle.textStyle?.resolve(statesController.value);
         _egdeInsetsGeometryTween.end ??=
-            _buttonStyle.padding?.resolve(_statesController.value);
+            _buttonStyle.padding?.resolve(statesController.value);
         _alignmentGeometryTween.end ??= _buttonStyle.alignment;
         // fixedSizeTween.end ??= _buttonStyle.fixedSize?.resolve(statesController.value);
         _minimumSizeTween.end ??=
-            _buttonStyle.minimumSize?.resolve(_statesController.value);
+            _buttonStyle.minimumSize?.resolve(statesController.value);
         _maximumSizeTween.end ??=
-            _buttonStyle.maximumSize?.resolve(_statesController.value);
+            _buttonStyle.maximumSize?.resolve(statesController.value);
         _borderSideTween.end ??=
-            _buttonStyle.side?.resolve(_statesController.value);
+            _buttonStyle.side?.resolve(statesController.value);
 
-        _animationController.forward(from: 0);
+        _animationController.value = 1;
       });
     }
   }
 
   /// Handler styles changes
   void stylesUpdater() {
+    // Updating with the same button state continously won't have any
+    // change in UI as the ValueKey remains the same for the widget.
+    // So better to not update.
+    if (widget.asyncBtnStatesController?.value?.buttonState ==
+        currentButtonState) {
+      return;
+    }
     if (mounted) {
       AsyncBtnState nextState =
           widget.asyncBtnStatesController?.value?.buttonState ??
@@ -1050,44 +1060,44 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.overlayColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _elevationTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.elevation
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.shadowColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.shape
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (widget.loadingStyleBuilder?.call(data)?.style ?? loadingStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.padding
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
@@ -1097,61 +1107,61 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.minimumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.maximumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
                 (widget.loadingStyleBuilder?.call(data)?.style ??
                         widget.loadingStyle?.style)
                     ?.side
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             break;
           case AsyncBtnState.success:
             _backgroundColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.overlayColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _elevationTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.elevation
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.shadowColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.shape
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (successStyleBuilder?.call(data)?.style ?? successStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.padding
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
@@ -1161,61 +1171,61 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.minimumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.maximumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
                 (widget.successStyleBuilder?.call(data)?.style ??
                         widget.successStyle?.style)
                     ?.side
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             break;
           case AsyncBtnState.failure:
             _backgroundColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.overlayColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _elevationTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.elevation
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.shadowColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.shape
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.padding
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
@@ -1225,69 +1235,69 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.minimumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.maximumSize
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
                 (widget.failureStyleBuilder?.call(data)?.style ??
                         widget.failureStyle?.style)
                     ?.side
-                    ?.resolve(_statesController.value);
+                    ?.resolve(statesController.value);
             break;
           case AsyncBtnState.idle:
             _backgroundColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.backgroundColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .backgroundColor
+                    ?.resolve(statesController.value);
             _foregroundColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.foregroundColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .foregroundColor
+                    ?.resolve(statesController.value);
             _overlayColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.overlayColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .overlayColor
+                    ?.resolve(statesController.value);
             _elevationTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.elevation
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .elevation
+                    ?.resolve(statesController.value);
             _shadowColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.shadowColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .shadowColor
+                    ?.resolve(statesController.value);
             _shapeBorderTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.shape
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .shape
+                    ?.resolve(statesController.value);
             _surfaceTintColorTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.surfaceTintColor
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .surfaceTintColor
+                    ?.resolve(statesController.value);
 
             // textStyleTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.textStyle?.resolve(statesController.value);
             _egdeInsetsGeometryTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.padding
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .padding
+                    ?.resolve(statesController.value);
             _alignmentGeometryTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.alignment;
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .alignment;
             // fixedSizeTween.end = (failureStyleBuilder?.call(data)?.style ?? failureStyle?.style)?.style?.fixedSize?.resolve(statesController.value);
             _minimumSizeTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.minimumSize
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .minimumSize
+                    ?.resolve(statesController.value);
             _maximumSizeTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.maximumSize
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .maximumSize
+                    ?.resolve(statesController.value);
             _borderSideTween.end =
-                (widget.styleBuilder?.call(data)?.style ?? widget.style)
-                    ?.side
-                    ?.resolve(_statesController.value);
+                (widget.styleBuilder?.call(data)?.style ?? _buttonStyle)
+                    .side
+                    ?.resolve(statesController.value);
           // break;
           // default:
           //   _backgroundColorTween.end =
@@ -1311,31 +1321,31 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         }
 
         _backgroundColorTween.end ??=
-            _buttonStyle.backgroundColor?.resolve(_statesController.value);
+            _buttonStyle.backgroundColor?.resolve(statesController.value);
         _foregroundColorTween.end ??=
-            _buttonStyle.foregroundColor?.resolve(_statesController.value);
+            _buttonStyle.foregroundColor?.resolve(statesController.value);
         _overlayColorTween.end ??=
-            _buttonStyle.overlayColor?.resolve(_statesController.value);
+            _buttonStyle.overlayColor?.resolve(statesController.value);
         _elevationTween.end ??=
-            _buttonStyle.elevation?.resolve(_statesController.value);
+            _buttonStyle.elevation?.resolve(statesController.value);
         _shadowColorTween.end ??=
-            _buttonStyle.shadowColor?.resolve(_statesController.value);
+            _buttonStyle.shadowColor?.resolve(statesController.value);
         _shapeBorderTween.end ??=
-            _buttonStyle.shape?.resolve(_statesController.value);
+            _buttonStyle.shape?.resolve(statesController.value);
         _surfaceTintColorTween.end ??=
-            _buttonStyle.surfaceTintColor?.resolve(_statesController.value);
+            _buttonStyle.surfaceTintColor?.resolve(statesController.value);
 
         // textStyleTween.end ??= _buttonStyle.textStyle?.resolve(statesController.value);
         _egdeInsetsGeometryTween.end ??=
-            _buttonStyle.padding?.resolve(_statesController.value);
+            _buttonStyle.padding?.resolve(statesController.value);
         _alignmentGeometryTween.end ??= _buttonStyle.alignment;
         // fixedSizeTween.end ??= _buttonStyle.fixedSize?.resolve(statesController.value);
         _minimumSizeTween.end ??=
-            _buttonStyle.minimumSize?.resolve(_statesController.value);
+            _buttonStyle.minimumSize?.resolve(statesController.value);
         _maximumSizeTween.end ??=
-            _buttonStyle.maximumSize?.resolve(_statesController.value);
+            _buttonStyle.maximumSize?.resolve(statesController.value);
         _borderSideTween.end ??=
-            _buttonStyle.side?.resolve(_statesController.value);
+            _buttonStyle.side?.resolve(statesController.value);
 
         currentButtonState = nextState;
         _data = data;
@@ -1365,9 +1375,6 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
       }
     });
 
-    widget.materialStatesController
-        ?.update(MaterialState.disabled, !widget.enabled);
-
     widget.asyncBtnStatesController?.addListener(() {
       stylesUpdater();
     });
@@ -1392,10 +1399,6 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
     _minimumSizeAnimation = _minimumSizeTween.animate(_animationController);
     _maximumSizeAnimation = _maximumSizeTween.animate(_animationController);
     _borderSideAnimation = _borderSideTween.animate(_animationController);
-
-    // if (currentButtonState != AsyncBtnState.idle) {
-    //   _animationController.forward(from: 0);
-    // }
   }
 
   @override
@@ -1403,8 +1406,8 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
   void dispose() {
     _animationController.removeListener(() {});
     _animationController.dispose();
-    _statesController.removeListener(() {});
-    _statesController.dispose();
+    statesController.removeListener(() {});
+    statesController.dispose();
     widget.asyncBtnStatesController?.removeListener(() {});
     widget.asyncBtnStatesController?.dispose();
     super.dispose();
@@ -1513,8 +1516,58 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
     return _buttonStyle.copyWith(
       backgroundColor:
           MaterialStateProperty.all(_backgroundColorAnimation.value),
-      foregroundColor:
-          MaterialStateProperty.all(_foregroundColorAnimation.value),
+      //     () {
+      //   MaterialStateProperty<Color?>? getValue(AsyncBtnState buttonState) {
+      //     switch (buttonState) {
+      //       case AsyncBtnState.idle:
+      //         return _buttonStyle.backgroundColor;
+      //       case AsyncBtnState.loading:
+      //         return (widget.loadingStyleBuilder?.call(_data)?.style ??
+      //                     widget.loadingStyle?.style)
+      //                 ?.backgroundColor ??
+      //             getValue(AsyncBtnState.idle);
+      //       case AsyncBtnState.success:
+      //         return (widget.successStyleBuilder?.call(_data)?.style ??
+      //                     widget.successStyle?.style)
+      //                 ?.backgroundColor ??
+      //             getValue(AsyncBtnState.idle);
+      //       case AsyncBtnState.failure:
+      //         return (widget.failureStyleBuilder?.call(_data)?.style ??
+      //                     widget.failureStyle?.style)
+      //                 ?.backgroundColor ??
+      //             getValue(AsyncBtnState.idle);
+      //     }
+      //   }
+
+      //   return getValue(currentButtonState);
+      // }(),
+      // foregroundColor:
+      //     MaterialStateProperty.all(_foregroundColorAnimation.value),
+      foregroundColor: () {
+        MaterialStateProperty<Color?>? getValue(AsyncBtnState buttonState) {
+          switch (buttonState) {
+            case AsyncBtnState.idle:
+              return _buttonStyle.foregroundColor;
+            case AsyncBtnState.loading:
+              return (widget.loadingStyleBuilder?.call(_data)?.style ??
+                          widget.loadingStyle?.style)
+                      ?.foregroundColor ??
+                  getValue(AsyncBtnState.idle);
+            case AsyncBtnState.success:
+              return (widget.successStyleBuilder?.call(_data)?.style ??
+                          widget.successStyle?.style)
+                      ?.foregroundColor ??
+                  getValue(AsyncBtnState.idle);
+            case AsyncBtnState.failure:
+              return (widget.failureStyleBuilder?.call(_data)?.style ??
+                          widget.failureStyle?.style)
+                      ?.foregroundColor ??
+                  getValue(AsyncBtnState.idle);
+          }
+        }
+
+        return getValue(currentButtonState);
+      }(),
       padding: MaterialStateProperty.all(_egdeInsetsGeometryAnimation.value),
       alignment: _alignmentGeometryAnimation.value,
       minimumSize: MaterialStateProperty.all(_minimumSizeAnimation.value),
@@ -1532,7 +1585,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
             AsyncBtnState buttonState) {
           switch (buttonState) {
             case AsyncBtnState.idle:
-              return widget.style?.mouseCursor;
+              return _buttonStyle.mouseCursor;
             case AsyncBtnState.loading:
               return (widget.loadingStyleBuilder?.call(_data)?.style ??
                           widget.loadingStyle?.style)
@@ -1557,7 +1610,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         MaterialTapTargetSize? getValue(AsyncBtnState buttonState) {
           switch (buttonState) {
             case AsyncBtnState.idle:
-              return widget.style?.tapTargetSize;
+              return _buttonStyle.tapTargetSize;
             case AsyncBtnState.loading:
               return (widget.loadingStyleBuilder?.call(_data)?.style ??
                           widget.loadingStyle?.style)
@@ -1582,7 +1635,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         Duration? getValue(AsyncBtnState buttonState) {
           switch (buttonState) {
             case AsyncBtnState.idle:
-              return widget.style?.animationDuration;
+              return _buttonStyle.animationDuration;
             case AsyncBtnState.loading:
               return (widget.loadingStyleBuilder?.call(_data)?.style ??
                           widget.loadingStyle?.style)
@@ -1607,7 +1660,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         bool? getValue(AsyncBtnState buttonState) {
           switch (buttonState) {
             case AsyncBtnState.idle:
-              return widget.style?.enableFeedback;
+              return _buttonStyle.enableFeedback;
             case AsyncBtnState.loading:
               return (widget.loadingStyleBuilder?.call(_data)?.style ??
                           widget.loadingStyle?.style)
@@ -1632,7 +1685,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         InteractiveInkFeatureFactory? getValue(AsyncBtnState buttonState) {
           switch (buttonState) {
             case AsyncBtnState.idle:
-              return widget.style?.splashFactory;
+              return _buttonStyle.splashFactory;
             case AsyncBtnState.loading:
               return (widget.loadingStyleBuilder?.call(_data)?.style ??
                           widget.loadingStyle?.style)

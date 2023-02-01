@@ -27,6 +27,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool toFinishSuccessfully = true;
 
+  AsyncBtnStatesController elevatedBtnController = AsyncBtnStatesController();
+  AsyncBtnStatesController outlinedBtnController = AsyncBtnStatesController();
+  AsyncBtnStatesController textBtnController = AsyncBtnStatesController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,54 +41,55 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              child: AsyncElevatedButton.withDefaultStyles(
-                onPressed:
-                    (AsyncButtonStateController btnStateController) async {
-                  try {
-                    btnStateController.update(ButtonState.loading);
-
-                    // await for your API/async process here, in this example we are
-                    // simply waiting for 2 seconds
-                    await Future.delayed(const Duration(seconds: 2));
-
-                    btnStateController.update(ButtonState.success);
-                  } catch (e) {
-                    btnStateController.update(ButtonState.failure);
-                  }
-                },
-                child: const Text('Execute'),
-              ),
-            ),
-            AsyncTextButton.withDefaultStyles(
-              onPressed: (AsyncButtonStateController btnStateController) async {
+            AsyncElevatedBtn.withDefaultStyles(
+              asyncBtnStatesController: elevatedBtnController,
+              onPressed: () async {
                 try {
-                  btnStateController.update(ButtonState.loading);
+                  elevatedBtnController.update(AsyncBtnState.loading);
 
                   // await for your API/async process here, in this example we are
                   // simply waiting for 2 seconds
                   await Future.delayed(const Duration(seconds: 2));
-
-                  btnStateController.update(ButtonState.success);
+                  if (!toFinishSuccessfully) throw '';
+                  elevatedBtnController.update(AsyncBtnState.success);
                 } catch (e) {
-                  btnStateController.update(ButtonState.failure);
+                  elevatedBtnController.update(AsyncBtnState.failure);
                 }
               },
               child: const Text('Execute'),
             ),
-            AsyncOutlinedButton.withDefaultStyles(
-              onPressed: (AsyncButtonStateController btnStateController) async {
+            AsyncTextBtn.withDefaultStyles(
+              asyncBtnStatesController: textBtnController,
+              onPressed: () async {
                 try {
-                  btnStateController.update(ButtonState.loading);
+                  textBtnController.update(AsyncBtnState.loading);
 
                   // await for your API/async process here, in this example we are
                   // simply waiting for 2 seconds
                   await Future.delayed(const Duration(seconds: 2));
-
-                  btnStateController.update(ButtonState.success);
+                  if (!toFinishSuccessfully) throw '';
+                  textBtnController.update(AsyncBtnState.success);
                 } catch (e) {
-                  btnStateController.update(ButtonState.failure);
+                  textBtnController.update(AsyncBtnState.failure);
                 }
+              },
+              child: const Text('Execute'),
+            ),
+            AsyncOutlinedBtn.withDefaultStyles(
+              asyncBtnStatesController: outlinedBtnController,
+              onPressed: () async {
+                try {
+                  outlinedBtnController.update(AsyncBtnState.loading);
+
+                  // await for your API/async process here, in this example we are
+                  // simply waiting for 2 seconds
+                  await Future.delayed(const Duration(seconds: 2));
+                  if (!toFinishSuccessfully) throw '';
+                  outlinedBtnController.update(AsyncBtnState.success);
+                } catch (e) {
+                  outlinedBtnController.update(AsyncBtnState.failure);
+                }
+                toFinishSuccessfully = !toFinishSuccessfully;
               },
               child: const Text('Execute'),
             ),
