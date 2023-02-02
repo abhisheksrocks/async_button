@@ -315,7 +315,7 @@ AsyncOutlinedBtn.withDefaultStyles(
 
 # More Intuitive Examples
 
-All buttons also supports these arguments - `loadingStyleBuilder`, `successStyleBuilder` and `failureStyleBuilder` which creates the custom state styles at runtime. This essentially mean that one can create unlimited number of custom state widgets and styles based on different conditions.
+All buttons also supports these arguments - `styleBuilder`, `loadingStyleBuilder`, `successStyleBuilder` and `failureStyleBuilder` which creates the custom state styles at runtime. This essentially mean that one can create unlimited number of custom state widgets and styles based on different conditions.
 
 There are also scopes for fallback styles and widgets if none of the necessary conditions are met.
 
@@ -328,6 +328,7 @@ In the above example:
 - There is **1** loading style - 'Signing In...'
 - There are **2** failure styles - 'Network Error', 'Wrong Password'
 - There is **1** success style - 'Welcome, \<CustomName\>!' (Note that 'Abhishek' is provided at runtime)
+- In the code, there are **4** fallback styles as well (one each for default, loading, failure, success) state
 
 Lets see how to create something like this. We'll also use fallback styles and widgets.
 

@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 /// [ButtonStyle.visualDensity]
 ///
 ///
+@Deprecated(
+  'This feature was deprecated after v1.0.1-beta.2',
+)
 class AsyncButtonStateStyle {
   /// Defines the [ButtonStyle] to use when the [ButtonState] corresponds to this style
   ///

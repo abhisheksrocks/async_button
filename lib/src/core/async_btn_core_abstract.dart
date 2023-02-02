@@ -1433,8 +1433,7 @@ abstract class AsyncBtnCoreState extends State<AsyncBtnCore>
         Widget? widgetToShow = widget.loadingStyleBuilder?.call(_data)?.widget;
         if (widgetToShow != null) {
           return SizedBox(
-            // key: ValueKey(buttonState.name+UniqueKey()),
-            key: UniqueKey(),
+            key: ValueKey(buttonState.name),
             child: widgetToShow,
           );
         }
