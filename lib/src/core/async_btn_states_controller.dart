@@ -30,6 +30,7 @@ class AsyncBtnStateModel {
 /// Used to control button's state changes animation
 class AsyncBtnStatesController extends ValueNotifier<AsyncBtnStateModel?> {
   /// Creates a [AsyncBtnStatesController]
+  ///
   /// Providing [data] alone will have no effect.
   AsyncBtnStatesController({
     AsyncBtnState? defaultButtonState,
@@ -40,8 +41,8 @@ class AsyncBtnStatesController extends ValueNotifier<AsyncBtnStateModel?> {
               : AsyncBtnStateModel(defaultButtonState, data: data),
         );
 
-  /// Updates the button's current [buttonState] to next
-  /// [data] is relevant, if you are using builder styles
+  /// Updates the button's current [buttonState] to next.
+  /// [data] is relevant if you are using builder styles
   void update(
     AsyncBtnState buttonState, {
     dynamic data,
