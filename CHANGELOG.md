@@ -1,3 +1,7 @@
+## 2.0.0-beta.1+1
+
+- Documentation corrections
+
 ## 2.0.0-beta.1
 
 > Deprecated `AsyncElevatedButton`, `AsyncTextButton` and `AsyncOutlinedButton`
