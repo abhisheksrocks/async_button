@@ -3,9 +3,6 @@ import 'async_button_state_controller_abstract.dart';
 /// Used to control button's state changes animation
 ///
 /// Used by [AsyncButtonCore]
-@Deprecated(
-  'This feature was deprecated after v1.0.1-beta.2',
-)
 class MainAsyncButtonStateController extends AsyncButtonStateController {
   /// Creates a [MainAsyncButtonStateController]
   MainAsyncButtonStateController({

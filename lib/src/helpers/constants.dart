@@ -1,7 +1,4 @@
 /// Corresponds to different button's state
-@Deprecated(
-  'This feature was deprecated after v1.0.1-beta.2',
-)
 enum ButtonState {
   /// When a button onPressed/onTap is null
   disabled,
