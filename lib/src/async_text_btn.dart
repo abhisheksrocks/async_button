@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'core/async_button_core_abstract.dart';
-import 'core/async_button_state_controller_abstract.dart';
-import 'helpers/async_button_state_style.dart';
+import 'core/async_btn_core_abstract.dart';
+import 'core/async_btn_states_controller.dart';
+import 'helpers/async_btn_state_style.dart';
 
 /// Implements [TextButton] for asynchronous [onPressed]
-@Deprecated(
-  'Use AsyncTextBtn instead. '
-  'This feature was deprecated after v1.0.1-beta.2',
-)
-class AsyncTextButton extends AsyncButtonCore {
-  /// Creates an [AsyncTextButton]
-  const AsyncTextButton({
+class AsyncTextBtn extends AsyncBtnCore {
+  /// Creates an [AsyncTextBtn]
+  const AsyncTextBtn({
     super.key,
     super.loadingStyle,
     super.loadingStyleBuilder,
@@ -34,16 +30,19 @@ class AsyncTextButton extends AsyncButtonCore {
     super.switchOutAnimationDuration,
     super.layoutBuilder,
     super.transitionBuilder,
+    super.onLongPress,
+    super.materialStatesController,
+    super.styleBuilder,
+    super.asyncBtnStatesController,
   });
 
   /// Same as [AsyncOutlinedButton()] but with sample values for [loadingStyle],
   /// [successStyle] and [failureStyle].
-  factory AsyncTextButton.withDefaultStyles({
+  factory AsyncTextBtn.withDefaultStyles({
     Key? key,
-    required Future<void> Function(
-            AsyncButtonStateController btnStateController)?
-        onPressed,
+    required Future<void> Function()? onPressed,
     required Widget child,
+    Future<void> Function()? onLongPress,
     bool switchBackAfterCompletion = true,
     Duration switchBackDelay = const Duration(seconds: 2),
     bool lockWhileAlreadyExecuting = true,
@@ -56,13 +55,16 @@ class AsyncTextButton extends AsyncButtonCore {
     Curve switchOutAnimationCurve = Curves.ease,
     ButtonStyle? style,
     Widget Function(Widget? currentChild, List<Widget> previousChildren)
-        layoutBuilder = AsyncButtonCore.defaultLayoutBuilder,
+        layoutBuilder = AsyncBtnCore.defaultLayoutBuilder,
     Widget Function(Widget child, Animation<double> animation)
-        transitionBuilder = AsyncButtonCore.defaultTransitionBuilder,
+        transitionBuilder = AsyncBtnCore.defaultTransitionBuilder,
+    MaterialStatesController? materialStatesController,
+    AsyncBtnStatesController? asyncBtnStatesController,
   }) {
-    return AsyncTextButton(
+    return AsyncTextBtn(
       onPressed: onPressed,
-      failureStyle: AsyncButtonStateStyle(
+      onLongPress: onLongPress,
+      failureStyle: AsyncBtnStateStyle(
         style: TextButton.styleFrom(
           foregroundColor: Colors.red,
         ),
@@ -75,7 +77,7 @@ class AsyncTextButton extends AsyncButtonCore {
           ],
         ),
       ),
-      loadingStyle: AsyncButtonStateStyle(
+      loadingStyle: AsyncBtnStateStyle(
         style: TextButton.styleFrom(
           foregroundColor: Colors.amber,
         ),
@@ -86,7 +88,7 @@ class AsyncTextButton extends AsyncButtonCore {
           ),
         ),
       ),
-      successStyle: AsyncButtonStateStyle(
+      successStyle: AsyncBtnStateStyle(
         style: TextButton.styleFrom(
           foregroundColor: Colors.green,
         ),
@@ -113,15 +115,17 @@ class AsyncTextButton extends AsyncButtonCore {
       switchOutAnimationCurve: switchOutAnimationCurve,
       transitionBuilder: transitionBuilder,
       layoutBuilder: layoutBuilder,
+      asyncBtnStatesController: asyncBtnStatesController,
+      materialStatesController: materialStatesController,
       child: child,
     );
   }
 
   @override
-  State<AsyncButtonCore> createState() => _AsyncTextButtonState();
+  State<AsyncBtnCore> createState() => _AsyncTextButtonState();
 }
 
-class _AsyncTextButtonState extends AsyncButtonCoreState {
+class _AsyncTextButtonState extends AsyncBtnCoreState {
   static const _simpleButton = TextButton(
     onPressed: null,
     child: SizedBox(),
@@ -130,6 +134,7 @@ class _AsyncTextButtonState extends AsyncButtonCoreState {
   @override
   ButtonStyle intializeButtonStyle() {
     return (widget.style ?? const ButtonStyle())
+        .merge(_simpleButton.themeStyleOf(context))
         .merge(_simpleButton.defaultStyleOf(context));
   }
 
@@ -138,6 +143,8 @@ class _AsyncTextButtonState extends AsyncButtonCoreState {
     return TextButton(
       onPressed: onPressed(),
       style: makeButtonStyle(),
+      onLongPress: onLongPressed(),
+      statesController: statesController,
       child: child,
     );
   }

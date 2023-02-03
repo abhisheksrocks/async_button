@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/custom_border_side_tween.dart';
 import '../helpers/async_button_state_style.dart';
 import '../helpers/constants.dart';
-import '../helpers/custom_border_side_tween.dart';
 
 // ? Why some of the code is commented?
 // * It was noticed that many of the button style attributes didn't need any
@@ -11,6 +11,9 @@ import '../helpers/custom_border_side_tween.dart';
 // * styles were tested and may get deleted in the future.
 
 /// Base abstract used to control current [ButtonState] change animations
+@Deprecated(
+  'This feature was deprecated after v1.0.1-beta.2',
+)
 abstract class AsyncButtonStateController {
   /// A controller for an animation
   final AnimationController animationController;

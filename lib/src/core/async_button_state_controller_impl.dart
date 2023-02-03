@@ -1,15 +1,11 @@
 import 'async_button_state_controller_abstract.dart';
 
-// Why can't we make [AsyncButtonStateController] a simple class(instead of
-// being abstract)?
-// Because, I can't see the users of this package ever creating an instance
-// of that class for themselves.
-// If ever there is need for it, a user can implement/extend the class,
-// and use it for there purpose.
-
 /// Used to control button's state changes animation
 ///
 /// Used by [AsyncButtonCore]
+@Deprecated(
+  'This feature was deprecated after v1.0.1-beta.2',
+)
 class MainAsyncButtonStateController extends AsyncButtonStateController {
   /// Creates a [MainAsyncButtonStateController]
   MainAsyncButtonStateController({

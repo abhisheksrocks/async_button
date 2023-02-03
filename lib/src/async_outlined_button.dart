@@ -5,6 +5,10 @@ import 'core/async_button_state_controller_abstract.dart';
 import 'helpers/async_button_state_style.dart';
 
 /// Implements [OutlinedButton] for asynchronous [onPressed]
+@Deprecated(
+  'Use AsyncOutlinedBtn instead. '
+  'This feature was deprecated after v1.0.1-beta.2',
+)
 class AsyncOutlinedButton extends AsyncButtonCore {
   /// Creates an [AsyncOutlinedButton]
   const AsyncOutlinedButton({

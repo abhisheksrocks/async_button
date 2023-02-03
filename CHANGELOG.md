@@ -1,7 +1,14 @@
-## (next)
+## 2.0.0-beta.1
 
-- Documentation correction
-- Minor improvements
+> Deprecated `AsyncElevatedButton`, `AsyncTextButton` and `AsyncOutlinedButton`
+
+- Introduced
+  - `AsyncElevatedBtn` to replace `AsyncElevatedButton`
+  - `AsyncTextBtn` to replace `AsyncTextButton`
+  - `AsyncOutlinedBtn` to replace `AsyncOutlinedButton`
+- Also introduced builder argument `styleBuilder` for button's idle state in all button classes
+- Button style accuracy and performance improvements
+- Documentation corrections
 
 ## 1.0.1-beta.2
 
