@@ -1,3 +1,7 @@
+## 2.0.0-beta.1+2
+
+- New example in Readme
+
 ## 2.0.0-beta.1+1
 
 - Documentation corrections
