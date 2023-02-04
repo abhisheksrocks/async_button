@@ -327,6 +327,14 @@ There are also scopes for fallback styles and widgets if none of the necessary c
 
 [Click here for Code!](https://github.com/abhisheksrocks/async_button/wiki/Intuitive-Example:-Login-Button)
 
+## Download Button
+
+<a href="https://github.com/abhisheksrocks/async_button/wiki/Intuitive-Example:-Download-Button">
+  <img src='https://github.com/abhisheksrocks/async_button/blob/main/doc/gif/example_download_btn.gif?raw=true' width=100%>
+</a>
+
+[Click here for Code!](https://github.com/abhisheksrocks/async_button/wiki/Intuitive-Example:-Download-Button)
+
 # Similar Projects
 
 If this library doesn't cater to your requirements. Here are the some similar projects you can explore:
